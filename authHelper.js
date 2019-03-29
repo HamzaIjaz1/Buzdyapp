@@ -8,11 +8,11 @@ module.exports.verify = (req, res, next) => {
     var bearer = req.headers['authorization'];
     if (typeof bearer !== 'undefined') {
         console.log('Token Found');
-        const b = bearer.split(' ');
+        // const b = bearer.split(' ');
 
-        const bearerToken = bearer[1];
+        // const bearerToken = b[1];
 
-        console.log('bearer token is', bearerToken);
+        console.log('bearer token is', bearer);
 
         req.token = bearerToken;
         next();
@@ -44,20 +44,21 @@ module.exports.generateToken = function (user, callback) {
 };
 
 
-module.exports.isAuthenticated = function (req, res, next) {
-    let token = req.get('session_token');
-    jwt.verify(token, constants.JWT_SECRET_TOKEN, function (err, decoded) {
-        if (err) {
-            res.json({
-                status: 0,
-                status_message: "INVALID_SESSION_TOKEN"
+module.exports.isAuthenticated = function (req) {
+    var token = req.headers.session_key;
+    return new Promise(function (resolve, reject) {
+
+        try {
+            jwt.verify(token, config.tokenKey.value, function (err, decoded) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
             });
-            return false;
+        } catch (error) {
+            reject(err);
+
         }
-        let obj = {
-            user_id: decoded.user_id,
-        }
-        res.locals.user = obj;
-        next();
     });
 }

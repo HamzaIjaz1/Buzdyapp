@@ -30,6 +30,10 @@ var creds = Joi.object().keys({
   language: Joi.empty().optional()
 });
 
+var validate_id = Joi.object().keys({
+id: Joi.number().empty().required()
+});
+
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
@@ -39,10 +43,12 @@ router.post('/signup', (req, res) => {
   Joi.validate(req.body, required, function (err, val) {
     if (err) {
       console.log(err);
-      res.send({
-        status: 0,
-        message: 'Invalid ' + err.details[0].path
-      });
+      return res.send(
+        JSON.stringify({
+          status: 0,
+          message: 'Invalid ' + err.details[0].path
+        })
+    );
     } else {
       console.log('Here', req.body);
       userController.signup_user(req, res);
@@ -55,14 +61,37 @@ router.post('/signin', (req, res) => {
   Joi.validate(req.body, creds, function (err, val) {
     if (err) {
       console.log("error is", err.details[0].path);
-      res.send({
-        status: 0,
-        message: 'Invalid ' + err.details[0].path
-      });
+
+      return res.send(
+        JSON.stringify({
+          status: 0,
+          message: 'Invalid ' + err.details[0].path
+        })
+    );
     } else {
       console.log('input alright');
       userController.signin_user(req, res);
     }
   });
 });
+
+router.get('/getmerchant/:id', (req, res) => {
+  console.log('request params in get are', req.params);
+  Joi.validate(req.params, validate_id, function (err, val) {
+    if (err) {
+      console.log("error is", err.details[0].path);
+
+      return res.send(
+        JSON.stringify({
+          status: 0,
+          message: 'Invalid ' + err.details[0].path
+        })
+    );
+    } else {
+      console.log('input alright');
+      userController.getbyID(req, res);
+    }
+  });
+});
+
 module.exports = router;

@@ -6,32 +6,41 @@ var hash = require('object-hash');
 
 var middleware = (req, res, next) => {
     var headervalue = config.header.value;
-    var reqHeadervalue = req.headers.value;
+    var reqHeadervalue = req.headers.secret;
     console.log('Header value key is', headervalue);
     console.log('Request Header value key is', req.headers.value);
 
+    console.log('Request body is',req.body);
+    console.log('Request url is',req.originalUrl);
 
     var data = {
         key: headervalue,
-        params: req.body
+        params: req.body,
+        url: req.originalUrl
     };
-    console.log('Hash is', hash.MD5(data));
+    hashvalue = hash.MD5(data)
+    console.log('Hash is', hashvalue);
 
-    if (reqHeadervalue == headervalue) {
+    if (reqHeadervalue == hashvalue) {
         console.log('Inside MiddleWare, Found The key!');
         next();
 
     } else if (typeof reqHeadervalue == 'undefined') {
-        res.send({
-            status: 0,
-            message: 'Api key not found'
-        });
+        return res.send(
+            JSON.stringify({
+                status: 0,
+                message: 'Secret key not found'
+            })
+        );
     } else {
         console.log('Inside MiddleWare, couldn\'t find the key!');
-        res.send({
-            status: 0,
-            message: 'Api key does not match'
-        });
+
+        return res.send(
+            JSON.stringify({
+                status: 0,
+                message: 'secret key does not match'
+            })
+        );
     }
 
 

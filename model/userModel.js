@@ -33,10 +33,32 @@ module.exports.signin_user_model = function (user) {
                 console.log(err);
                 reject(err);
             } else {
-                console.log('result is',result);
                 resolve(result);
                 
                 console.log('inside else model');
+            }
+
+        });
+    });
+};
+
+module.exports.getbyID_model = function (id) {
+    console.log('user id must be',id);
+
+    var userid = parseInt(id.id);
+    console.log('after parse', id.id);
+
+    var queryString = "SELECT * FROM users WHERE users.id = ?";
+    return new Promise(function (resolve, reject) {
+        db.query(queryString, [userid], function (err, result) {
+            if (err) {
+                console.log('Error while getting all users',err);
+                reject(err);
+            } else {
+                console.log('Inside model result is',result);
+                resolve(result);
+                
+                console.log('inside else model for get all merchants');
             }
 
         });

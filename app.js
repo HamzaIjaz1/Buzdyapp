@@ -5,6 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var categoriesRouter = require('./routes/categories');
+var {
+  auth
+} = require('./middleware/auth_middleware');
 var config = require('./config');
 
 var productsRouter = require('./routes/products');
@@ -27,18 +31,21 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(middleware);
+// app.use(middleware);
+// app.use('/categories', auth);
 app.use('/', indexRouter);
 
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
-
+app.use('/categories', categoriesRouter);
 app.use('/getHash', function (req, res) {
+
   var headervalue = config.header.value;
 
   var data = {
     key: headervalue,
-    params: req.body
+    params: req.body,
+    url: req.headers.url
   };
   var hashed = hash.MD5(data);
   console.log('Hash is', hashed);
