@@ -26,22 +26,21 @@ module.exports.verify = (req, res, next) => {
 };
 
 module.exports.generateToken = function (user, callback) {
-console.log(user);
-return new Promise(function (resolve, reject) {
-    try {
-        var token = jwt.sign({
-            data: user
-        }, config.tokenKey.value, {
-            expiresIn: '10 days'
-        });
-        resolve(token);
-    } catch (err) {
-        reject(err);
-    }
-});
+    console.log(user);
+    return new Promise(function (resolve, reject) {
+        try {
+            var token = jwt.sign({
+                data: user
+            }, config.tokenKey.value, {
+                expiresIn: '10 days'
+            });
+            resolve(token);
+        } catch (err) {
+            reject(err);
+        }
+    });
 
 
-// console.log(token);
 };
 
 

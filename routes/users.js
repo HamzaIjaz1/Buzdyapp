@@ -8,7 +8,7 @@ var required =
   Joi.object().keys({
     name: Joi.string().min(3).required(),
     email: Joi.string().min(11).required(),
-    category_id: Joi.required(),
+    category_id: Joi.number().empty().required(),
     password: Joi.string().min(8).required(),
     image: Joi.empty().optional(),
     phone: Joi.number().empty().optional(),
@@ -24,11 +24,11 @@ var required =
     isarchive: Joi.empty().optional(),
   });
 
-  var creds = Joi.object().keys({
-    email:Joi.string().email().min(11).required(),
-    password: Joi.string().min(8).required(),
-    language: Joi.empty().optional()
-  });
+var creds = Joi.object().keys({
+  email: Joi.string().email().min(11).required(),
+  password: Joi.string().min(8).required(),
+  language: Joi.empty().optional()
+});
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -39,24 +39,30 @@ router.post('/signup', (req, res) => {
   Joi.validate(req.body, required, function (err, val) {
     if (err) {
       console.log(err);
-      res.send({status:0,message:'Input validation failed'});
+      res.send({
+        status: 0,
+        message: 'Invalid ' + err.details[0].path
+      });
     } else {
       console.log('Here', req.body);
       userController.signup_user(req, res);
     }
-  })
+  });
 });
 
 
-router.post('/signin',(req,res)=>{
-  Joi.validate(req.body, creds, function (err, val){
-    if (err){
-      console.log('Error in values',err);
-    }else{
+router.post('/signin', (req, res) => {
+  Joi.validate(req.body, creds, function (err, val) {
+    if (err) {
+      console.log("error is", err.details[0].path);
+      res.send({
+        status: 0,
+        message: 'Invalid ' + err.details[0].path
+      });
+    } else {
       console.log('input alright');
-      userController.signin_user(req,res);
+      userController.signin_user(req, res);
     }
   });
-}
- );
+});
 module.exports = router;
