@@ -3,7 +3,7 @@ var config = {
 		host: 'localhost', // database host
 		user: 'root', // your database username
 		password: '', // your database password
-		db: 'buzdy' // your database name
+		db: 'buzdy2' // your database name
 	},
 	server: {
 		host: '127.0.0.1',

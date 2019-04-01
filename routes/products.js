@@ -1,25 +1,32 @@
 var express = require('express');
 var router = express.Router();
-var authHelper = require('../authHelper');
-var jwt = require ('jsonwebtoken');
-var config = require ('../config');
+var productController = require('../Controller/productController');
+var Joi = require('joi');
 
+// var inputs = Joi.object().keys({
+//   user_id: Joi.number().empty().required(),
+//   is_featured: Joi.boolean().empty().required(),
+//   name: Joi.string().empty().required(),
+//   description: Joi.string().empty().required(),
+//   image : Joi.empty().optional()
+//   // productable_id : Joi.
+// });
 
-/* GET home page. */
-router.get('/', authHelper.verify ,function(req, res, next) {
-  // res.render('index', { title: 'Express' });
-  jwt.verify(req.token,config.tokenKey.value,(err, data)=>{
-if (err){
-    res.status(403).send('Token not valid');
-}else{
-    res.json({
-        message: 'Products: ',
-        authdata: data
-    });
-}
-  });
-  console.log('inside products.js');
-  res.send('/products');
-});
+// router.PUT('/addproduct', (request, response) => {
+//   Joi.validate(response.body, inputs, function (err, val) {
+//     if (err) {
+//       console.log(err);
+//       return response.send(
+//         JSON.stringify({
+//           status: 0,
+//           message: 'Invalid ' + err.details[0].path
+//         })
+//       );
+//     } else {
+//       categoryController.add_product(request, response);
+//     }
+//   });
+//   console.log('inside products.js');
+// });
 
 module.exports = router;

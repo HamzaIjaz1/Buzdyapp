@@ -1,5 +1,5 @@
 var db = require('../db');
-
+var mysql = require('mysql');
 var r = {
     Status: 1,
     Message: "Success"
@@ -34,7 +34,7 @@ module.exports.signin_user_model = function (user) {
                 reject(err);
             } else {
                 resolve(result);
-                
+
                 console.log('inside else model');
             }
 
@@ -43,7 +43,7 @@ module.exports.signin_user_model = function (user) {
 };
 
 module.exports.getbyID_model = function (id) {
-    console.log('user id must be',id);
+    console.log('user id must be', id);
 
     var userid = parseInt(id.id);
     console.log('after parse', id.id);
@@ -52,12 +52,90 @@ module.exports.getbyID_model = function (id) {
     return new Promise(function (resolve, reject) {
         db.query(queryString, [userid], function (err, result) {
             if (err) {
-                console.log('Error while getting all users',err);
+                console.log('Error while getting all users', err);
                 reject(err);
             } else {
-                console.log('Inside model result is',result);
+                console.log('Inside model result is', result);
                 resolve(result);
-                
+
+                console.log('inside else model for get all merchants');
+            }
+
+        });
+    });
+};
+
+
+module.exports.getall_model = function (inputs) {
+    console.log('Filters to get all merchants are', inputs);
+    var pagenumber = 1;
+    var pagesize = 5;
+    var myradius = 30;
+
+
+
+    var queryString = "SELECT * FROM users";
+    var conditions = [];
+    if (inputs.from_time && inputs.to_time) {
+        queryString += ' LEFT JOIN timings on timings.timingable_id=users.id WHERE timings.from_time = '+mysql.escape(inputs.from_time)+' AND timings.to_time= '+mysql.escape(inputs.to_time);
+}
+    if (inputs.page_no) {
+        pagenumber = inputs.page_no;
+    }
+    if (inputs.pagesize) {
+        pagesize = inputs.pagesize;
+    }
+    if (inputs.merchant_featured) {
+        if (queryString.includes('WHERE')) {
+            queryString += ' AND users.featured = ' + mysql.escape(inputs.merchant_featured);
+
+        } else
+            queryString += ' WHERE users.featured = ' + mysql.escape(inputs.merchant_featured);
+    }
+    if (inputs.keyword) {
+        if (queryString.includes('WHERE')) {
+            queryString += ' AND users.name Like % ' + mysql.escape(inputs.keyword) + '%';
+
+        } else
+            queryString += ' WHERE users.name Like % ' + mysql.escape(inputs.keyword) + '%';
+    }
+    if (inputs.country) {
+        console.log('country found');
+        if (queryString.includes('WHERE')) {
+            queryString += ' AND users.country = ' + mysql.escape(inputs.country);
+
+        } else
+            queryString += ' WHERE users.country = ' + mysql.escape(inputs.country);
+    }
+    if (inputs.city) {
+        if (queryString.includes('WHERE')) {
+            queryString += ' AND users.city= ' + mysql.escape(inputs.city);
+        } else
+            queryString += ' WHERE users.city = ' + mysql.escape(inputs.city);
+    }
+    if (inputs.latitude && inputs.longitude) {
+        if (inputs.radius){
+            myradius  =inputs.radius;
+        }
+        if (queryString.includes('WHERE')) {
+            queryString += 'AND (3959 * acos(cos(radians('+mysql.escape(inputs.latitude)+'))*cos(radians(latitude))*cos(radians(longitude) - radians('+mysql.escape(inputs.longitude)+')) + sin(radians('+mysql.escape(inputs.latitude)+')) * sin(radians(latitude)))) >'+mysql.escape(myradius);
+        } else
+        queryString += ' WHERE (3959 * acos(cos(radians('+mysql.escape(inputs.latitude)+'))*cos(radians(latitude))*cos(radians(longitude) - radians('+mysql.escape(inputs.longitude)+')) + sin(radians('+mysql.escape(inputs.latitude)+')) * sin(radians(latitude))))'+mysql.escape(myradius);
+    }
+    
+
+    queryString += ' LIMIT '+pagesize+' OFFSET '+pagenumber;
+
+    return new Promise(function (resolve, reject) {
+        console.log('query string is', queryString);
+        db.query(queryString, function (err, result) {
+            if (err) {
+                console.log('Error while getting all users', err);
+                reject(err);
+            } else {
+                // console.log('Inside model result is',result);
+                resolve(result);
+
                 console.log('inside else model for get all merchants');
             }
 

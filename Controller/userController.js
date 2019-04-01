@@ -100,3 +100,31 @@ module.exports.getbyID = function (request, response) {
         }
     );
 };
+
+
+module.exports.getall = function (request, response) {
+    if (typeof request.language != 'undefined') {
+        lan = request.language;
+    }
+    user_model.getall_model(request.query).then(
+        function (users) {
+            return response.send(
+                JSON.stringify({
+                    status: 1,
+                    message: language.languages[lan].success,
+                    merchants: users
+                })
+            );
+
+        },
+        function (error) {
+            console.log('Error while getting merchants by id', error);
+            return response.send(
+                JSON.stringify({
+                    status: 0,
+                    message: language.languages[lan].error_text
+                })
+            );
+        }
+    );
+};
