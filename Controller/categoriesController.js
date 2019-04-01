@@ -4,6 +4,8 @@ var language = require('../language');
 var lan = 0;
 
 module.exports.get_categories = function (request, response) {
+    console.log('Request information', request.info);
+
     if (typeof request.body.language != 'undefined') {
         lan = request.language;
         console.log('Language variable is', lan);

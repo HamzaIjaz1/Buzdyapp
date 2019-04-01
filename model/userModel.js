@@ -72,10 +72,9 @@ module.exports.getall_model = function (inputs) {
 
 
     var queryString = "SELECT * FROM users";
-    var conditions = [];
     if (inputs.from_time && inputs.to_time) {
-        queryString += ' LEFT JOIN timings on timings.timingable_id=users.id WHERE timings.from_time = '+mysql.escape(inputs.from_time)+' AND timings.to_time= '+mysql.escape(inputs.to_time);
-}
+        queryString += ' LEFT JOIN timings on timings.timingable_id=users.id WHERE timings.from_time = ' + mysql.escape(inputs.from_time) + ' AND timings.to_time= ' + mysql.escape(inputs.to_time);
+    }
     if (inputs.page_no) {
         pagenumber = inputs.page_no;
     }
@@ -111,17 +110,17 @@ module.exports.getall_model = function (inputs) {
             queryString += ' WHERE users.city = ' + mysql.escape(inputs.city);
     }
     if (inputs.latitude && inputs.longitude) {
-        if (inputs.radius){
-            myradius  =inputs.radius;
+        if (inputs.radius) {
+            myradius = inputs.radius;
         }
         if (queryString.includes('WHERE')) {
-            queryString += 'AND (3959 * acos(cos(radians('+mysql.escape(inputs.latitude)+'))*cos(radians(latitude))*cos(radians(longitude) - radians('+mysql.escape(inputs.longitude)+')) + sin(radians('+mysql.escape(inputs.latitude)+')) * sin(radians(latitude)))) >'+mysql.escape(myradius);
+            queryString += 'AND (3959 * acos(cos(radians(' + mysql.escape(inputs.latitude) + '))*cos(radians(latitude))*cos(radians(longitude) - radians(' + mysql.escape(inputs.longitude) + ')) + sin(radians(' + mysql.escape(inputs.latitude) + ')) * sin(radians(latitude)))) >' + mysql.escape(myradius);
         } else
-        queryString += ' WHERE (3959 * acos(cos(radians('+mysql.escape(inputs.latitude)+'))*cos(radians(latitude))*cos(radians(longitude) - radians('+mysql.escape(inputs.longitude)+')) + sin(radians('+mysql.escape(inputs.latitude)+')) * sin(radians(latitude))))'+mysql.escape(myradius);
+            queryString += ' WHERE (3959 * acos(cos(radians(' + mysql.escape(inputs.latitude) + '))*cos(radians(latitude))*cos(radians(longitude) - radians(' + mysql.escape(inputs.longitude) + ')) + sin(radians(' + mysql.escape(inputs.latitude) + ')) * sin(radians(latitude))))' + mysql.escape(myradius);
     }
-    
 
-    queryString += ' LIMIT '+pagesize+' OFFSET '+pagenumber;
+
+    queryString += ' LIMIT ' + pagesize + ' OFFSET ' + pagenumber;
 
     return new Promise(function (resolve, reject) {
         console.log('query string is', queryString);

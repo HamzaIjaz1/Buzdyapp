@@ -34,7 +34,9 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use(middleware);
-// app.use('/categories', auth);
+app.use('/categories', auth);
+app.use('/deals', auth);
+app.use('/products', auth);
 app.use('/', indexRouter);
 
 app.use('/users', usersRouter);

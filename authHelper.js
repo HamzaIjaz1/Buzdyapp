@@ -14,7 +14,7 @@ module.exports.verify = (req, res, next) => {
 
         console.log('bearer token is', bearer);
 
-        req.token = bearerToken;
+        req.token = bearer;
         next();
 
     } else {
@@ -46,6 +46,7 @@ module.exports.generateToken = function (user, callback) {
 
 module.exports.isAuthenticated = function (req) {
     var token = req.headers.session_key;
+    console.log('is authenticated token value is', token);
     return new Promise(function (resolve, reject) {
 
         try {
@@ -53,11 +54,13 @@ module.exports.isAuthenticated = function (req) {
                 if (err) {
                     reject(err);
                 } else {
+                    console.log('Decode is',decoded);
+                    req.info = decoded.data;
                     resolve();
                 }
             });
         } catch (error) {
-            reject(err);
+            reject(error);
 
         }
     });
