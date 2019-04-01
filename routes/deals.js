@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var router = express.Router();
 var Joi = require('joi');
-var productsController = require('../Controller/productController');
+var dealController = require('../Controller/dealContoller');
 
 var validate_id = Joi.object().keys({
     id: Joi.number().empty().required()
@@ -21,7 +21,7 @@ router.get('/getbyid', (req, res) => {
         );
       } else {
         console.log('input alright');
-        productsController.getbyID(req, res);
+        dealController.getbyID(req, res);
       }
     });
   });

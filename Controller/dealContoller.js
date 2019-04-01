@@ -1,4 +1,4 @@
-var product_model = require('../model/productModel');
+var deal_model = require('../model/dealModel');
 var authHelper = require('../authHelper');
 var language = require('../language');
 
@@ -8,13 +8,13 @@ module.exports.getbyID = function (request, response) {
     if (request.query.language) {
         lan = request.query.language;
     }
-    product_model.getbyID_model(request.query.id).then(
-        function (product) {
+    deal_model.getbyID_model(request.query.id).then(
+        function (deal) {
             return response.send(
                 JSON.stringify({
                     status: 1,
                     message: language.languages[lan].success,
-                    product: product
+                    deal: deal
                 })
             );
 

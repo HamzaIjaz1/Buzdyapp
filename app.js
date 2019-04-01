@@ -6,12 +6,14 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var categoriesRouter = require('./routes/categories');
+var dealsRouter  =require ('./routes/deals');
+var productsRouter = require('./routes/products');
 var {
   auth
 } = require('./middleware/auth_middleware');
 var config = require('./config');
 
-var productsRouter = require('./routes/products');
+
 const {
   middleware
 } = require('./middleware/middleware');
@@ -38,6 +40,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
+app.use('/deals',dealsRouter);
 app.use('/getHash', function (req, res) {
 
   var headervalue = config.header.value;

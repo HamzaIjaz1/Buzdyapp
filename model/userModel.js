@@ -1,9 +1,6 @@
 var db = require('../db');
 var mysql = require('mysql');
-var r = {
-    Status: 1,
-    Message: "Success"
-};
+
 module.exports.signup_user_model = function (user) {
     console.log(user);
 
