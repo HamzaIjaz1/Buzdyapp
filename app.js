@@ -9,6 +9,8 @@ var categoriesRouter = require('./routes/categories');
 var dealsRouter  =require ('./routes/deals');
 var productsRouter = require('./routes/products');
 var banksRouter = require('./routes/banks');
+var branchRouter = require('./routes/branch');
+
 var {
   auth
 } = require('./middleware/auth_middleware');
@@ -39,6 +41,8 @@ app.use('/categories', auth);
 app.use('/deals', auth);
 app.use('/products', auth);
 app.use('/banks', auth);
+app.use('/branch', auth);
+
 app.use('/', indexRouter);
 
 app.use('/users', usersRouter);
@@ -46,6 +50,7 @@ app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/deals',dealsRouter);
 app.use('/banks', banksRouter);
+app.use('/branch', branchRouter);
 
 app.use('/getHash', function (req, res) {
 
