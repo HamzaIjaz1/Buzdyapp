@@ -49,7 +49,7 @@ module.exports.getbyFilters = function (request, response) {
 
         },
         function (error) {
-            console.log('Error while getting merchants by id', error);
+            console.log('Error while getting deals by filter', error);
             return response.send(
                 JSON.stringify({
                     status: 0,
@@ -58,4 +58,31 @@ module.exports.getbyFilters = function (request, response) {
             );
         }
     );
+};
+
+module.exports.add = function (request, response) {
+
+    if (request.body.language) {
+        lan = request.body.language;
+    }
+    deal_model.add_model(request.body).then(
+        function (result) {
+                return response.send(
+                    JSON.stringify({
+                        status: 1,
+                        message: language.languages[lan].success,
+                        response: result,
+                    })
+                );
+
+        },
+        function (err) {
+            console.log(err);
+            return response.send({
+                status: 0,
+                message: 'Error adding deal'
+            });
+        }
+    );
+
 };

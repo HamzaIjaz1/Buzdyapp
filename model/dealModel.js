@@ -17,7 +17,7 @@ module.exports.getbyID_model = function (id) {
                 console.log('Inside model result is', result);
                 resolve(result);
 
-                console.log('inside else model for get all merchants');
+                console.log('inside else model for get a deal');
             }
 
         });
@@ -107,6 +107,33 @@ module.exports.getbyFilters_model = function (inputs) {
                 resolve(result);
 
                 console.log('inside else model for get all merchants');
+            }
+
+        });
+    });
+};
+
+
+module.exports.add_model = function (inputs) {
+    console.log('DEAL array must be', inputs);
+    var type ="";
+    if (inputs.dealable_type=='user'){
+        inputs.dealable_type='App\\Models\\User';
+    }else{
+        inputs.dealable_type='App\\Models\\Bank';
+    }
+
+    var queryString = "INSERT into deals SET ?";
+    return new Promise(function (resolve, reject) {
+        db.query(queryString, [inputs], function (err, result) {
+            if (err) {
+                console.log('Error while adding deals', err);
+                reject(err);
+            } else {
+                console.log('Inside model result is', result);
+                resolve(result);
+
+                console.log('inside else model for adding deal');
             }
 
         });

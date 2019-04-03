@@ -105,3 +105,30 @@ module.exports.getbyFilters_model = function (inputs) {
         });
     });
 };
+
+
+module.exports.add_model = function (inputs) {
+    console.log('products array must be', inputs);
+    var type ="";
+    if (inputs.productable_type=='user'){
+        inputs.productable_type='App\\Models\\User';
+    }else{
+        inputs.productable_type='App\\Models\\Bank';
+    }
+
+    var queryString = "INSERT into products SET ?";
+    return new Promise(function (resolve, reject) {
+        db.query(queryString, [inputs], function (err, result) {
+            if (err) {
+                console.log('Error while adding product', err);
+                reject(err);
+            } else {
+                console.log('Inside model result is', result);
+                resolve(result);
+
+                console.log('inside else model for adding product');
+            }
+
+        });
+    });
+};

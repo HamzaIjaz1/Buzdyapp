@@ -20,6 +20,17 @@ var filters = Joi.object().keys({
   page_size: Joi.number().empty().optional(),
   fav: Joi.number().empty().optional()
 });
+
+var values = Joi.object().keys({
+  name: Joi.string().empty().required(),
+  description: Joi.string().empty().required(),
+  image: Joi.string().empty().optional(),
+  dealable_id: Joi.number().empty().required(),
+  dealable_type: Joi.string().empty().required(),
+  category_id: Joi.number().empty().required(),
+  featured: Joi.boolean().empty().required()
+
+});
 router.get('/getbyid', (req, res) => {
   Joi.validate(req.query, validate_id, function (err, val) {
     if (err) {
@@ -56,4 +67,20 @@ router.get('/getbyfilters', (req, res) => {
   });
 });
 
+router.post('/add', (req, res) => {
+  Joi.validate(req.body, values, function (err, val) {
+    if (err) {
+      console.log(err);
+      return res.send(
+        JSON.stringify({
+          status: 0,
+          message: 'Invalid ' + err.details[0].path
+        })
+      );
+    } else {
+      console.log('Here', req.body);
+      dealController.add(req, res);
+    }
+  });
+});
 module.exports = router;
