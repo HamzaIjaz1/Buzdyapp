@@ -10,6 +10,8 @@ var required =
     email: Joi.string().min(11).required(),
     category_id: Joi.number().empty().required(),
     password: Joi.string().min(8).required(),
+    page_no: Joi.number().empty().optional(),
+    page_size: Joi.number().empty().optional(),
     image: Joi.empty().optional(),
     phone: Joi.number().empty().optional(),
     country: Joi.string().empty().optional(),

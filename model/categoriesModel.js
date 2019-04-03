@@ -5,7 +5,7 @@ module.exports.get_categories = function (input) {
     console.log('inside categories model!');
 
     var totalpages = 0;
-    var pagenumber = 1;
+    var pagenumber = 0;
     var pagesize = 5;
 
     // var number = 'Select count(*) as TotalCount from categories';

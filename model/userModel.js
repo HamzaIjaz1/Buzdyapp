@@ -65,7 +65,7 @@ module.exports.getbyID_model = function (id) {
 
 module.exports.getall_model = function (inputs) {
     console.log('Filters to get all merchants are', inputs);
-    var pagenumber = 1;
+    var pagenumber = 0;
     var pagesize = 5;
     var myradius = 30;
 
@@ -116,7 +116,7 @@ module.exports.getall_model = function (inputs) {
         if (queryString.includes('WHERE')) {
             queryString += 'AND (3959 * acos(cos(radians(' + mysql.escape(inputs.latitude) + '))*cos(radians(latitude))*cos(radians(longitude) - radians(' + mysql.escape(inputs.longitude) + ')) + sin(radians(' + mysql.escape(inputs.latitude) + ')) * sin(radians(latitude)))) >' + mysql.escape(myradius);
         } else
-            queryString += ' WHERE (3959 * acos(cos(radians(' + mysql.escape(inputs.latitude) + '))*cos(radians(latitude))*cos(radians(longitude) - radians(' + mysql.escape(inputs.longitude) + ')) + sin(radians(' + mysql.escape(inputs.latitude) + ')) * sin(radians(latitude))))' + mysql.escape(myradius);
+            queryString += ' WHERE (3959 * acos(cos(radians(' + mysql.escape(inputs.latitude) + '))*cos(radians(latitude))*cos(radians(longitude) - radians(' + mysql.escape(inputs.longitude) + ')) + sin(radians(' + mysql.escape(inputs.latitude) + ')) * sin(radians(latitude)))) >' + mysql.escape(myradius);
     }
 
 

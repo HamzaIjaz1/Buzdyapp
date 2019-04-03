@@ -16,6 +16,8 @@ var filters = Joi.object().keys({
   country: Joi.string().empty().optional(),
   city: Joi.string().empty().optional(),
   language: Joi.number().empty().optional(),
+  page_no: Joi.number().empty().optional(),
+  page_size: Joi.number().empty().optional(),
   fav: Joi.number().empty().optional()
 
 });
