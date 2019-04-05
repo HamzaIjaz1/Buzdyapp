@@ -199,17 +199,17 @@ module.exports.update = function (req, response) {
     user_model.update_model(req.body).then(
         function (result) {
             console.log('result received is',result);
-            return response.send(
-                JSON.stringify({
+            return response.json(
+                {
                     status: 1,
                     message: language.languages[0].success
-                })
+                }
             );
 
         },
         function (err) {
             console.log(err);
-            return response.send({
+            return response.json({
                 status: 0,
                 message: 'Error updating profile'
             });

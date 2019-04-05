@@ -14,17 +14,17 @@ module.exports.add = function (req, response) {
     req.body.user_id = req.info;
     review_model.add(req.body).then(
         function (result) {
-            return response.send(
-                JSON.stringify({
+            return response.json(
+                {
                     status: 1,
                     message: language.languages[0].success,
-                })
+                }
             );
 
         },
         function (err) {
             console.log(err);
-            return response.send({
+            return response.json({
                 status: 0,
                 message: 'Error adding a review'
             });

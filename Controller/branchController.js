@@ -9,22 +9,20 @@ module.exports.getbyID = function (request, response) {
     }
     branch_model.getbyID_model(request.query.id).then(
         function (branch) {
-            return response.send(
-                JSON.stringify({
-                    status: 1,
-                    message: language.languages[lan].success,
-                    branch: branch
-                })
-            );
+            return response.json({
+                status: 1,
+                message: language.languages[lan].success,
+                branch: branch
+            });
 
         },
         function (error) {
             console.log('Error while getting bank by id', error);
-            return response.send(
-                JSON.stringify({
+            return response.json(
+               {
                     status: 0,
                     message: language.languages[lan].error_text
-                })
+                }
             );
         }
     );
@@ -38,22 +36,22 @@ module.exports.getbyFilters = function (request, response) {
     request.query.userid = request.info;
     branch_model.getbyFilters_model(request.query).then(
         function (branches) {
-            return response.send(
-                JSON.stringify({
+            return response.json(
+                {
                     status: 1,
                     message: language.languages[lan].success,
                     branches: branches
-                })
+                }
             );
 
         },
         function (error) {
             console.log('Error while getting branches by id', error);
-            return response.send(
-                JSON.stringify({
+            return response.json(
+                {
                     status: 0,
                     message: language.languages[lan].error_text
-                })
+                }
             );
         }
     );
