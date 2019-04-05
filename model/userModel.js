@@ -138,3 +138,79 @@ module.exports.getall_model = function (inputs) {
         });
     });
 };
+
+
+module.exports.follow_model = function (inputs) {
+    console.log('Model received: ', inputs);
+    // var exists;
+    // var follower_id = parseInt(inputs.follower_id);
+    // var following_id = parseInt(inputs.following_id);
+    // var querycheck = "Select * from following where follower_id= ? AND following_id= ?";
+
+
+    // db.query(querycheck, [follower_id, following_id], function (err, result) {
+
+    //     if (result[0]) {
+    //         console.log('result inside model is ', result[0]);
+    //         // flag = result[0].flag;
+    //         exists=1;
+
+    //     }
+    // });
+
+
+    return new Promise(function (resolve, reject) {
+
+        var queryString = "INSERT INTO following SET ?";
+        db.query(queryString, inputs, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+
+
+
+
+    });
+
+};
+
+module.exports.unfollow_model = function (inputs) {
+    console.log('Model received: ', inputs);
+
+    return new Promise(function (resolve, reject) {
+
+        var queryString = "Delete from following WHERE following.follower_id=? AND following.following_id=?";
+        db.query(queryString, [inputs.follower_id, inputs.following_id], function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+
+};
+
+
+module.exports.update_model = function (inputs) {
+    console.log('Model received: ', inputs);
+
+    return new Promise(function (resolve, reject) {
+
+        var queryString = "update users set ? where users.id= "+mysql.escape(inputs.id);
+        db.query(queryString, inputs, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+
+};
+

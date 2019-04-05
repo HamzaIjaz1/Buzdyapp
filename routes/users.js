@@ -49,6 +49,12 @@ var filters = Joi.object().keys({
   to_time: Joi.string().regex(/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/).empty().optional()
 });
 
+var validate_merchant_id = Joi.object().keys({
+  following_id: Joi.number().empty().required()
+});
+
+
+
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
@@ -127,5 +133,57 @@ router.get('/allmerchants', (req, res) => {
     }
   });
 });
+
+router.post('/follow', (req, res) => {
+  Joi.validate(req.body, validate_merchant_id, function (err, val) {
+    if (err) {
+      console.log(err);
+      return res.send(
+        JSON.stringify({
+          status: 0,
+          message: 'Invalid ' + err.details[0].path
+        })
+      );
+    } else {
+      console.log('Here', req.body);
+      userController.follow_merchant(req, res);
+    }
+  });
+});
+
+router.delete('/unfollow', (req, res) => {
+  Joi.validate(req.body, validate_merchant_id, function (err, val) {
+    if (err) {
+      console.log(err);
+      return res.send(
+        JSON.stringify({
+          status: 0,
+          message: 'Invalid ' + err.details[0].path
+        })
+      );
+    } else {
+      console.log('Here', req.body);
+      userController.unfollow_merchant(req, res);
+    }
+  });
+});
+
+router.put('/update', (req, res) => {
+  Joi.validate(req.body, required, function (err, val) {
+    if (err) {
+      console.log(err);
+      return res.send(
+        JSON.stringify({
+          status: 0,
+          message: 'Invalid ' + err.details[0].path
+        })
+      );
+    } else {
+      console.log('Here', req.body);
+      userController.update(req, res);
+    }
+  });
+});
+
 
 module.exports = router;

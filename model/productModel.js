@@ -34,9 +34,9 @@ module.exports.getbyFilters_model = function (inputs) {
 
 
     var queryString = "SELECT * FROM products JOIN users on users.id = products.productable_id";
-    if (inputs.fav){
+    if (inputs.fav) {
         var fav = parseInt(inputs.fav);
-        if (fav>0){
+        if (fav > 0) {
             queryString += ' JOIN fav_merchant on users.id=fav_merchant.merchant_id WHERE fav_merchant.user_id=' + mysql.escape(inputs.userid);
         }
     }
@@ -109,11 +109,11 @@ module.exports.getbyFilters_model = function (inputs) {
 
 module.exports.add_model = function (inputs) {
     console.log('products array must be', inputs);
-    var type ="";
-    if (inputs.productable_type=='user'){
-        inputs.productable_type='App\\Models\\User';
-    }else{
-        inputs.productable_type='App\\Models\\Bank';
+    var type = "";
+    if (inputs.productable_type == 'user') {
+        inputs.productable_type = 'App\\Models\\User';
+    } else {
+        inputs.productable_type = 'App\\Models\\Bank';
     }
 
     var queryString = "INSERT into products SET ?";
@@ -131,4 +131,42 @@ module.exports.add_model = function (inputs) {
 
         });
     });
+};
+
+module.exports.compare = function (input) {
+    console.log('Ids received are', input);
+
+    var values = input.split(',');
+    console.log('After split', values);
+
+    var checkquery = 'select count(distinct category_id) as number from products where id IN (' + mysql.escape(values) + ')';
+    console.log('checkquery is',checkquery);
+    return new Promise(function (resolve, reject) {
+
+        db.query(checkquery, function (err, checkresult) {
+            if (err || checkresult[0].number > 1) {
+                // console.log('error occurred', err);
+                 console.log('check result is', checkresult[0].number);
+
+                reject('categories must be same');
+            } else {
+                console.log('category is not greater than 1');
+                var queryString = 'select * from products where id IN (' + mysql.escape(values) + ')';
+                db.query(queryString, function (err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+
+                });
+
+
+            }
+        });
+
+
+    });
+
+
 };

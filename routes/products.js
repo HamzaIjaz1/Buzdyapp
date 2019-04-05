@@ -30,6 +30,11 @@ var values = Joi.object().keys({
   category_id: Joi.number().empty().required(),
   featured: Joi.boolean().empty().required()
 });
+
+var req_array = Joi.object().keys({
+  ids: Joi.empty().required()
+});
+
 router.get('/getbyid', (req, res) => {
   Joi.validate(req.query, validate_id, function (err, val) {
     if (err) {
@@ -80,6 +85,22 @@ router.post('/add', (req, res) => {
     } else {
       console.log('Here', req.body);
       productsController.add(req, res);
+    }
+  });
+});
+
+router.get('/compare', (req, res) => {
+  Joi.validate(req.query, req_array, function (err, val) {
+    if (err) {
+      console.log('error in values', err);
+
+      return res.send(JSON.stringify({
+        status: 0,
+        message: 'Invaid' + err.details[0].path
+      }));
+    } else {
+      console.log('values are', req.query);
+      productsController.compare(req, res);
     }
   });
 });

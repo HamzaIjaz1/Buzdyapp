@@ -8,8 +8,8 @@ var lan = 0;
 
 module.exports.signup_user = function (req, response) {
 
-    if (request.language != 'undefined') {
-        lan = request.language;
+    if (req.language != 'undefined') {
+        lan = req.language;
     }
     user_model.signup_user_model(req.body).then(
         function (result) {
@@ -128,3 +128,93 @@ module.exports.getall = function (request, response) {
         }
     );
 };
+
+module.exports.follow_merchant = function (req, response) {
+    // console.log('This is the request object',req);
+    console.log('This is request data', req.info);
+    if (req.body.language != 'undefined') {
+        lan =req.language;
+    }
+    req.body.follower_id=req.info;
+    user_model.follow_model(req.body).then(
+        function (result) {
+            console.log('result received is',result);
+            return response.send(
+                JSON.stringify({
+                    status: 1,
+                    message: language.languages[0].success
+                })
+            );
+
+        },
+        function (err) {
+            console.log(err);
+            return response.send({
+                status: 0,
+                message: 'Error following merchant'
+            });
+        }
+    );
+
+};
+
+
+module.exports.unfollow_merchant = function (req, response) {
+    // console.log('This is the request object',req);
+    console.log('This is request data', req.info);
+    if (req.body.language != 'undefined') {
+        lan =req.language;
+    }
+    req.body.follower_id=req.info;
+    user_model.unfollow_model(req.body).then(
+        function (result) {
+            console.log('result received is',result);
+            return response.send(
+                JSON.stringify({
+                    status: 1,
+                    message: language.languages[0].success
+                })
+            );
+
+        },
+        function (err) {
+            console.log(err);
+            return response.send({
+                status: 0,
+                message: 'Error unfollowing merchant'
+            });
+        }
+    );
+
+};
+
+
+module.exports.update = function (req, response) {
+    // console.log('This is the request object',req);
+    console.log('This is request data', req.info);
+    if (req.body.language != 'undefined') {
+        lan =req.language;
+    }
+    req.body.id=req.info;
+    user_model.update_model(req.body).then(
+        function (result) {
+            console.log('result received is',result);
+            return response.send(
+                JSON.stringify({
+                    status: 1,
+                    message: language.languages[0].success
+                })
+            );
+
+        },
+        function (err) {
+            console.log(err);
+            return response.send({
+                status: 0,
+                message: 'Error updating profile'
+            });
+        }
+    );
+
+};
+

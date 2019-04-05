@@ -89,3 +89,31 @@ module.exports.add = function (request, response) {
     );
 
 };
+
+module.exports.compare = function (request, response){
+
+    console.log('Request data is', request.body);
+
+    product_model.compare(request.query.ids).then(
+        function (result){
+            return response.json (
+                {
+                    status: 1,
+                    message: language.languages[0].success,
+                    products: result
+                }
+            )
+
+        },
+        function(err){
+            console.log('Error occurred in compare controller',err);
+            return response.send(
+                JSON.stringify({
+                    status:0,
+                    message:err
+                })
+            );
+
+        }
+    );
+};
