@@ -133,12 +133,12 @@ module.exports.follow_merchant = function (req, response) {
     // console.log('This is the request object',req);
     console.log('This is request data', req.info);
     if (req.body.language != 'undefined') {
-        lan =req.language;
+        lan = req.language;
     }
-    req.body.follower_id=req.info;
+    req.body.follower_id = req.info;
     user_model.follow_model(req.body).then(
         function (result) {
-            console.log('result received is',result);
+            console.log('result received is', result);
             return response.send(
                 JSON.stringify({
                     status: 1,
@@ -163,12 +163,12 @@ module.exports.unfollow_merchant = function (req, response) {
     // console.log('This is the request object',req);
     console.log('This is request data', req.info);
     if (req.body.language != 'undefined') {
-        lan =req.language;
+        lan = req.language;
     }
-    req.body.follower_id=req.info;
+    req.body.follower_id = req.info;
     user_model.unfollow_model(req.body).then(
         function (result) {
-            console.log('result received is',result);
+            console.log('result received is', result);
             return response.send(
                 JSON.stringify({
                     status: 1,
@@ -193,18 +193,16 @@ module.exports.update = function (req, response) {
     // console.log('This is the request object',req);
     console.log('This is request data', req.info);
     if (req.body.language != 'undefined') {
-        lan =req.language;
+        lan = req.language;
     }
-    req.body.id=req.info;
+    req.body.id = req.info;
     user_model.update_model(req.body).then(
         function (result) {
-            console.log('result received is',result);
-            return response.json(
-                {
-                    status: 1,
-                    message: language.languages[0].success
-                }
-            );
+            console.log('result received is', result);
+            return response.json({
+                status: 1,
+                message: language.languages[0].success
+            });
 
         },
         function (err) {
@@ -218,3 +216,51 @@ module.exports.update = function (req, response) {
 
 };
 
+module.exports.updateCoins = function (request, response) {
+    if (request.body.language != 'undefined') {
+        lan = request.language;
+    }
+    request.body.id = request.info;
+    user_model.updateCoins_model(request.body).then(
+        function (result) {
+            console.log('result received is', result);
+            return response.json({
+                status: 1,
+                message: language.languages[0].success
+            });
+
+        },
+        function (err) {
+            console.log(err);
+            return response.json({
+                status: 0,
+                message: 'Error updating coins'
+            });
+        }
+    );
+};
+
+module.exports.getCoins = function (request, response) {
+    if (request.body.language != 'undefined') {
+        lan = request.language;
+    }
+    request.body.id = request.info;
+    user_model.getCoins_model(request.body).then(
+        function (result) {
+            console.log('result received is', result);
+            return response.json({
+                status: 1,
+                message: language.languages[0].success,
+                coins: result[0].coins
+            });
+
+        },
+        function (err) {
+            console.log(err);
+            return response.json({
+                status: 0,
+                message: 'Error updating coins'
+            });
+        }
+    );
+};

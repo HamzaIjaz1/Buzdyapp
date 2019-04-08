@@ -214,3 +214,42 @@ module.exports.update_model = function (inputs) {
 
 };
 
+module.exports.updateCoins_model = function (inputs) {
+    console.log('Model received: ', inputs);
+
+    return new Promise(function (resolve, reject) {
+
+        var queryString = "update users set users.coins= "+inputs.number+ " where users.id= "+mysql.escape(inputs.id);
+        db.query(queryString, function (err, result) {
+            if (err) {
+                console.log('updating user coins error!');
+                reject(err);
+            } else {
+                console.log('updating user coins success');
+                resolve(result);
+            }
+        });
+
+    });
+
+};
+
+module.exports.getCoins_model = function (inputs) {
+    console.log('Model received: ', inputs);
+
+    return new Promise(function (resolve, reject) {
+
+        var queryString = "Select coins from users where users.id= "+mysql.escape(inputs.id);
+        db.query(queryString, function (err, result) {
+            if (err) {
+                console.log('getting user coins error!');
+                reject(err);
+            } else {
+                console.log('getting user coins success');
+                resolve(result);
+            }
+        });
+
+    });
+
+};

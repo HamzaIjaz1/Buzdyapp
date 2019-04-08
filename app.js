@@ -11,6 +11,8 @@ var productsRouter = require('./routes/products');
 var banksRouter = require('./routes/banks');
 var branchRouter = require('./routes/branch');
 var reviewRouter = require('./routes/review');
+var metaRouter = require('./routes/coinsmetadata');
+var ratesRouter = require('./routes/coinrates');
 
 var {
   auth
@@ -47,6 +49,9 @@ app.use('/users/follow', auth);
 app.use('/users/unfollow', auth);
 app.use('/review', auth);
 app.use('/users/update', auth);
+app.use('/users/updatecoins',auth);
+app.use('/users/getcoins',auth);
+
 
 
 
@@ -59,6 +64,8 @@ app.use('/deals',dealsRouter);
 app.use('/banks', banksRouter);
 app.use('/branch', branchRouter);
 app.use('/review', reviewRouter);
+app.use('/coinsmetadata',metaRouter);
+app.use('/coinrates',ratesRouter);
 
 app.use('/getHash', function (req, res) {
 

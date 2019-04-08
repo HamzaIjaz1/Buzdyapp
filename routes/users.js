@@ -53,6 +53,10 @@ var validate_merchant_id = Joi.object().keys({
   following_id: Joi.number().empty().required()
 });
 
+var validate_coin = Joi.object().keys({
+  number: Joi.number().empty().required()
+});
+
 
 
 /* GET users listing. */
@@ -185,5 +189,26 @@ router.put('/update', (req, res) => {
   });
 });
 
+router.put('/updatecoins', (req, res) => {
+  Joi.validate(req.body, validate_coin, function (err, val) {
+    if (err) {
+      console.log(err);
+      return res.send(
+        JSON.stringify({
+          status: 0,
+          message: 'Invalid ' + err.details[0].path
+        })
+      );
+    } else {
+      console.log('Here', req.body);
+      userController.updateCoins(req, res);
+    }
+  });
+});
+
+router.get('/getcoins', (req, res) => {
+      userController.getCoins(req, res);
+   
+});
 
 module.exports = router;
