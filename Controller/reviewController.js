@@ -61,3 +61,28 @@ module.exports.add = function (req, response) {
     );
 
 };
+
+module.exports.getreviews = function (request, response){
+    console.log('request query parameters forgetting reviews are', request.query);
+    review_model.get_reviews_model(request.query).then(
+        function(result){
+            return response.json(
+                {
+                    status: 1,
+                    message: language.languages[0].success,
+                    reviews: result
+                }
+            );
+
+        },
+        function (err){
+            console.log('error while getting reviews with filters', err);
+            return  response.json({
+                status: 0,
+                message: 'Error adding a review'
+            });
+
+        }
+    );
+
+};

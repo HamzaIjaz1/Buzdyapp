@@ -36,7 +36,7 @@ module.exports.get_views = function (request, response) {
         lan = request.language;
     }
     
-    views_model.get_views_model(request.query.id).then(
+    views_model.get_views_model(request.query).then(
         function (result) {
             console.log('result received is', result);
             return response.json({

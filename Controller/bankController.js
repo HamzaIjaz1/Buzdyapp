@@ -1,6 +1,7 @@
 var bank_model = require('../model/bankModel');
 var authHelper = require('../authHelper');
 var language = require('../language');
+var viewsModel = require('../model/viewsModel');
 
 var lan = 0;
 
@@ -10,6 +11,21 @@ module.exports.getbyID = function (request, response) {
     }
     bank_model.getbyID_model(request.query.id).then(
         function (bank) {
+            var view = {
+                user_id:request.info,
+                model_id:request.query.id,
+                model_type:'bank'
+            };
+
+            viewsModel.insert_views_model(view).then(
+                function (result){
+                    console.log('ersult from view model is', result);
+                },
+                function (err){
+                    console.log('error occurred while adding view', err);
+                }
+            );
+
             return response.json(
                 {
                     status: 1,

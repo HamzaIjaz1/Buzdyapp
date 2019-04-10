@@ -175,6 +175,40 @@ module.exports.unfollow_model = function (inputs) {
 
 };
 
+module.exports.get_following_model = function(id){
+    var queryString = 'select * from following where follower_id= '+mysql.escape(id);
+
+    return new Promise(function(resolve, reject){
+        db.query(queryString,function (err, result){
+            if (err){
+                console.log('error getting following',err);
+                reject(err);
+            }
+            else{
+                console.log('result after getting following is');
+                resolve(result);
+            }
+        });
+    });
+};
+
+module.exports.get_follower_model = function(id){
+    var queryString = 'select * from following where following_id= '+mysql.escape(id);
+
+    return new Promise(function(resolve, reject){
+        db.query(queryString,function (err, result){
+            if (err){
+                console.log('error getting followers',err);
+                reject(err);
+            }
+            else{
+                console.log('result after getting followers is');
+                resolve(result);
+            }
+        });
+    });
+};
+
 
 module.exports.update_model = function (inputs) {
     console.log('Model received: ', inputs);

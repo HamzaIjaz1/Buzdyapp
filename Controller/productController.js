@@ -3,6 +3,7 @@ var authHelper = require('../authHelper');
 var language = require('../language');
 var notify = require('../fcmhelper');
 var devicesModel = require('../Model/userdeviceModel');
+var viewsModel = require('../model/viewsModel');
 var lan = 0;
 
 module.exports.getbyID = function (request, response) {
@@ -11,6 +12,20 @@ module.exports.getbyID = function (request, response) {
     }
     product_model.getbyID_model(request.query.id).then(
         function (product) {
+            var view = {
+                user_id:request.info,
+                model_id:request.query.id,
+                model_type:'product'
+            };
+
+            viewsModel.insert_views_model(view).then(
+                function (result){
+                    console.log('ersult from view model is', result);
+                },
+                function (err){
+                    console.log('error occurred while adding view', err);
+                }
+            );
             return response.json({
                 status: 1,
                 message: language.languages[lan].success,

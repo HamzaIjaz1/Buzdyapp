@@ -53,6 +53,11 @@ var validate_merchant_id = Joi.object().keys({
   following_id: Joi.number().empty().required()
 });
 
+var follow = Joi.object().keys({
+  following_id: Joi.number().empty().required(),
+  model_type: Joi.string().empty().required()
+});
+
 var validate_coin = Joi.object().keys({
   number: Joi.number().empty().required()
 });
@@ -139,7 +144,7 @@ router.get('/allmerchants', (req, res) => {
 });
 
 router.post('/follow', (req, res) => {
-  Joi.validate(req.body, validate_merchant_id, function (err, val) {
+  Joi.validate(req.body, follow, function (err, val) {
     if (err) {
       console.log(err);
       return res.send(
@@ -209,6 +214,16 @@ router.put('/updatecoins', (req, res) => {
 router.get('/getcoins', (req, res) => {
       userController.getCoins(req, res);
    
+});
+
+router.get('/getfollowing', (req, res) => {
+  console.log('request params in get are', req.info);
+  userController.getfollowing(req, res);
+});
+
+router.get('/getfollowers', (req, res) => {
+  console.log('request params in get are', req.info);
+  userController.getfollowers(req, res);
 });
 
 module.exports = router;

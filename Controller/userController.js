@@ -189,7 +189,7 @@ module.exports.follow_merchant = function (request, response) {
 
 
 module.exports.unfollow_merchant = function (request, response) {
-    // console.log('This is the request object',request);
+    
     console.log('This is request data', request.info);
     if (request.body.language != 'undefined') {
         lan = request.language;
@@ -281,6 +281,48 @@ module.exports.getCoins = function (request, response) {
                 status: 1,
                 message: language.languages[0].success,
                 coins: result[0].coins
+            });
+
+        },
+        function (err) {
+            console.log(err);
+            return response.json({
+                status: 0,
+                message: 'Error updating coins'
+            });
+        }
+    );
+};
+
+module.exports.getfollowers = function (request, response){
+    user_model.get_follower_model(request.info).then(
+        function (result) {
+            console.log('result received is', result);
+            return response.json({
+                status: 1,
+                message: language.languages[0].success,
+                followers: result
+            });
+
+        },
+        function (err) {
+            console.log(err);
+            return response.json({
+                status: 0,
+                message: 'Error updating coins'
+            });
+        }
+    );
+};
+
+module.exports.getfollowing = function (request, response){
+    user_model.get_following_model(request.info).then(
+        function (result) {
+            console.log('result received is', result);
+            return response.json({
+                status: 1,
+                message: language.languages[0].success,
+                following: result
             });
 
         },
