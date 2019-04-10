@@ -166,13 +166,18 @@ module.exports.follow_model = function (inputs) {
             if (err) {
                 reject(err);
             } else {
-                resolve(result);
+                var tokenquery = 'select token from user_devices where user_id=' + mysql.escape(inputs.following_id);
+                db.query(tokenquery, function (err, tokenresult) {
+
+                    if (err) {
+                        console.log('error occurred in token query');
+                    } else
+                        resolve(tokenresult);
+
+
+                });
             }
         });
-
-
-
-
     });
 
 };
@@ -201,7 +206,7 @@ module.exports.update_model = function (inputs) {
 
     return new Promise(function (resolve, reject) {
 
-        var queryString = "update users set ? where users.id= "+mysql.escape(inputs.id);
+        var queryString = "update users set ? where users.id= " + mysql.escape(inputs.id);
         db.query(queryString, inputs, function (err, result) {
             if (err) {
                 reject(err);
@@ -219,7 +224,7 @@ module.exports.updateCoins_model = function (inputs) {
 
     return new Promise(function (resolve, reject) {
 
-        var queryString = "update users set users.coins= "+inputs.number+ " where users.id= "+mysql.escape(inputs.id);
+        var queryString = "update users set users.coins= " + inputs.number + " where users.id= " + mysql.escape(inputs.id);
         db.query(queryString, function (err, result) {
             if (err) {
                 console.log('updating user coins error!');
@@ -239,7 +244,7 @@ module.exports.getCoins_model = function (inputs) {
 
     return new Promise(function (resolve, reject) {
 
-        var queryString = "Select coins from users where users.id= "+mysql.escape(inputs.id);
+        var queryString = "Select coins from users where users.id= " + mysql.escape(inputs.id);
         db.query(queryString, function (err, result) {
             if (err) {
                 console.log('getting user coins error!');

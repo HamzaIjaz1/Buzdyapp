@@ -1,8 +1,7 @@
 var user_model = require('../model/userModel');
-var jwt = require('jsonwebtoken');
-var config = require('../config');
 var authHelper = require('../authHelper');
 var language = require('../language');
+var notify = require('../fcmhelper');
 
 var lan = 0;
 
@@ -130,7 +129,6 @@ module.exports.getall = function (request, response) {
 };
 
 module.exports.follow_merchant = function (req, response) {
-    // console.log('This is the request object',req);
     console.log('This is request data', req.info);
     if (req.body.language != 'undefined') {
         lan = req.language;
@@ -138,7 +136,11 @@ module.exports.follow_merchant = function (req, response) {
     req.body.follower_id = req.info;
     user_model.follow_model(req.body).then(
         function (result) {
-            console.log('result received is', result);
+            if (result.length > 0) {
+                console.log('result of tokenquery is', result);
+                notify.sendsingleAndroid('message');
+            }
+
             return response.send(
                 JSON.stringify({
                     status: 1,

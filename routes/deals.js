@@ -79,7 +79,7 @@ router.post('/add', (req, res) => {
       );
     } else {
       console.log('Here', req.body);
-      dealController.add(req, res);
+      dealController.addDeal(req, res);
     }
   });
 });

@@ -13,6 +13,8 @@ var branchRouter = require('./routes/branch');
 var reviewRouter = require('./routes/review');
 var metaRouter = require('./routes/coinsmetadata');
 var ratesRouter = require('./routes/coinrates');
+var deviceRouter = require('./routes/userDevice');
+
 
 var {
   auth
@@ -51,6 +53,7 @@ app.use('/review', auth);
 app.use('/users/update', auth);
 app.use('/users/updatecoins',auth);
 app.use('/users/getcoins',auth);
+app.use('/device',auth);
 
 
 
@@ -66,6 +69,7 @@ app.use('/branch', branchRouter);
 app.use('/review', reviewRouter);
 app.use('/coinsmetadata',metaRouter);
 app.use('/coinrates',ratesRouter);
+app.use('/device',deviceRouter);
 
 app.use('/getHash', function (req, res) {
 

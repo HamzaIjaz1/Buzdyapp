@@ -123,6 +123,17 @@ module.exports.add_model = function (inputs) {
                 console.log('Error while adding product', err);
                 reject(err);
             } else {
+                // var tokenquery = 'Select token from user_devices join following on user_devices.user_id=following.follower_id where following.following_id='+mysql.escape(inputs.user_id);
+                // db.query(tokenquery, function (err, result){
+                //     if (err){
+                //         console.log('error while executing tokenquery',err);
+                //         reject(err);
+                //     }
+                //     else{
+                //         resolve(result);
+                //     }
+
+                // });
                 console.log('Inside model result is', result);
                 resolve(result);
 

@@ -114,7 +114,7 @@ module.exports.getbyFilters_model = function (inputs) {
 };
 
 
-module.exports.add_model = function (inputs) {
+module.exports.addDeal_model = function (inputs) {
     console.log('DEAL array must be', inputs);
     var type ="";
     if (inputs.dealable_type=='user'){
@@ -130,9 +130,19 @@ module.exports.add_model = function (inputs) {
                 console.log('Error while adding deals', err);
                 reject(err);
             } else {
-                console.log('Inside model result is', result);
-                resolve(result);
+                // var tokenquery = 'Select token from user_devices join following on user_devices.user_id=following.follower_id';
+                // db.query(tokenquery, function (err, result){
+                //     if (err){
+                //         console.log('error while executing tokenquery',err);
+                //         reject(err);
+                //     }
+                //     else{
+                //         resolve(result);
+                //     }
 
+                // });
+                console.log('result received after adding deal is ', result);
+                resolve(result);
                 console.log('inside else model for adding deal');
             }
 
