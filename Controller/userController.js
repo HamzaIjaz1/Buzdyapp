@@ -2,15 +2,17 @@ var user_model = require('../model/userModel');
 var authHelper = require('../authHelper');
 var language = require('../language');
 var notify = require('../fcmhelper');
-
+var notify = require('../fcmhelper');
+var devicesModel = require('../Model/userdeviceModel');
+var notificationsModel = require('../Model/notificationsModel');
 var lan = 0;
 
-module.exports.signup_user = function (req, response) {
+module.exports.signup_user = function (request, response) {
 
-    if (req.language != 'undefined') {
-        lan = req.language;
+    if (request.language != 'undefined') {
+        lan = request.language;
     }
-    user_model.signup_user_model(req.body).then(
+    user_model.signup_user_model(request.body).then(
         function (result) {
             console.log(result);
             authHelper.generateToken(userinfo[0].id).then((token) => {
@@ -128,26 +130,46 @@ module.exports.getall = function (request, response) {
     );
 };
 
-module.exports.follow_merchant = function (req, response) {
-    console.log('This is request data', req.info);
-    if (req.body.language != 'undefined') {
-        lan = req.language;
+module.exports.follow_merchant = function (request, response) {
+    console.log('This is request data', request.info);
+    if (request.body.language != 'undefined') {
+        lan = request.language;
     }
-    req.body.follower_id = req.info;
-    user_model.follow_model(req.body).then(
+    request.body.follower_id = request.info;
+    user_model.follow_model(request.body).then(
         function (result) {
-            if (result.length > 0) {
-                console.log('result of tokenquery is', result);
-                notify.sendsingleAndroid('message');
-            }
+            
+            devicesModel.getDevicebyID(request.info).then(
+                function (devicesresult) {
+                    console.log('recieved Result in usercontroller for follow is ', devicesresult);
+                    // notify.sendsingleAndroid(message);
+                    var notification={
+                        user_id:request.info,
+                        title:'New Follower',
+                        message:'You have a new follower'
+                    }
+                    notificationsModel.addNotification(notification).then(
+                        function(notifyResult){
+                            console.log('notify result is', notifyResult);
 
-            return response.send(
-                JSON.stringify({
-                    status: 1,
-                    message: language.languages[0].success
-                })
-            );
+                        },
+                        function(notifyerr){
+                            console.log('notify error is', notifyerr);
+                        }
+                    );
 
+                },
+                function (err) {
+                    console.log('Error is ', err);
+
+                }
+            ).catch(function (err) {
+                console.log('error occurred, insde catch after calling devices', err);
+            });
+            return response.json({
+                status: 1,
+                message: language.languages[0].success
+            });
         },
         function (err) {
             console.log(err);
@@ -156,19 +178,24 @@ module.exports.follow_merchant = function (req, response) {
                 message: 'Error following merchant'
             });
         }
-    );
+    ).catch(function (err) {
+        console.log('error occurred, insde catch after model', err);
+        response.json({
+            error:err
+        });
+    });
 
 };
 
 
-module.exports.unfollow_merchant = function (req, response) {
-    // console.log('This is the request object',req);
-    console.log('This is request data', req.info);
-    if (req.body.language != 'undefined') {
-        lan = req.language;
+module.exports.unfollow_merchant = function (request, response) {
+    // console.log('This is the request object',request);
+    console.log('This is request data', request.info);
+    if (request.body.language != 'undefined') {
+        lan = request.language;
     }
-    req.body.follower_id = req.info;
-    user_model.unfollow_model(req.body).then(
+    request.body.follower_id = request.info;
+    user_model.unfollow_model(request.body).then(
         function (result) {
             console.log('result received is', result);
             return response.send(
@@ -191,14 +218,14 @@ module.exports.unfollow_merchant = function (req, response) {
 };
 
 
-module.exports.update = function (req, response) {
-    // console.log('This is the request object',req);
-    console.log('This is request data', req.info);
-    if (req.body.language != 'undefined') {
-        lan = req.language;
+module.exports.update = function (request, response) {
+    // console.log('This is the request object',request);
+    console.log('This is request data', request.info);
+    if (request.body.language != 'undefined') {
+        lan = request.language;
     }
-    req.body.id = req.info;
-    user_model.update_model(req.body).then(
+    request.body.id = request.info;
+    user_model.update_model(request.body).then(
         function (result) {
             console.log('result received is', result);
             return response.json({

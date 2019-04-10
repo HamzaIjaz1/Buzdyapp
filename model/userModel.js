@@ -142,22 +142,6 @@ module.exports.getall_model = function (inputs) {
 
 module.exports.follow_model = function (inputs) {
     console.log('Model received: ', inputs);
-    // var exists;
-    // var follower_id = parseInt(inputs.follower_id);
-    // var following_id = parseInt(inputs.following_id);
-    // var querycheck = "Select * from following where follower_id= ? AND following_id= ?";
-
-
-    // db.query(querycheck, [follower_id, following_id], function (err, result) {
-
-    //     if (result[0]) {
-    //         console.log('result inside model is ', result[0]);
-    //         // flag = result[0].flag;
-    //         exists=1;
-
-    //     }
-    // });
-
 
     return new Promise(function (resolve, reject) {
 
@@ -166,16 +150,7 @@ module.exports.follow_model = function (inputs) {
             if (err) {
                 reject(err);
             } else {
-                var tokenquery = 'select token from user_devices where user_id=' + mysql.escape(inputs.following_id);
-                db.query(tokenquery, function (err, tokenresult) {
-
-                    if (err) {
-                        console.log('error occurred in token query');
-                    } else
-                        resolve(tokenresult);
-
-
-                });
+              resolve(result);
             }
         });
     });

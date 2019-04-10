@@ -25,7 +25,6 @@ var values = Joi.object().keys({
   name: Joi.string().empty().required(),
   description: Joi.string().empty().required(),
   image: Joi.string().empty().optional(),
-  dealable_id: Joi.number().empty().required(),
   dealable_type: Joi.string().empty().required(),
   category_id: Joi.number().empty().required(),
   featured: Joi.boolean().empty().required()

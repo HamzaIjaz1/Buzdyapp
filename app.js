@@ -14,6 +14,8 @@ var reviewRouter = require('./routes/review');
 var metaRouter = require('./routes/coinsmetadata');
 var ratesRouter = require('./routes/coinrates');
 var deviceRouter = require('./routes/userDevice');
+var notifyRouter = require('./routes/notifications');
+var viewsRouter = require ('./routes/views');
 
 
 var {
@@ -54,6 +56,8 @@ app.use('/users/update', auth);
 app.use('/users/updatecoins',auth);
 app.use('/users/getcoins',auth);
 app.use('/device',auth);
+app.use('/notifications',auth);
+
 
 
 
@@ -70,6 +74,9 @@ app.use('/review', reviewRouter);
 app.use('/coinsmetadata',metaRouter);
 app.use('/coinrates',ratesRouter);
 app.use('/device',deviceRouter);
+app.use('/notifications',notifyRouter);
+app.use('/views', viewsRouter);
+
 
 app.use('/getHash', function (req, res) {
 

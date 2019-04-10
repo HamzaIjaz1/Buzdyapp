@@ -107,7 +107,7 @@ module.exports.getbyFilters_model = function (inputs) {
 };
 
 
-module.exports.add_model = function (inputs) {
+module.exports.addProduct_model = function (inputs) {
     console.log('products array must be', inputs);
     var type = "";
     if (inputs.productable_type == 'user') {

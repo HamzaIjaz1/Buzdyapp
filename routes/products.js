@@ -25,7 +25,6 @@ var values = Joi.object().keys({
   name: Joi.string().empty().required(),
   description: Joi.string().empty().required(),
   image: Joi.string().empty().optional(),
-  productable_id: Joi.number().empty().required(),
   productable_type: Joi.string().empty().required(),
   category_id: Joi.number().empty().required(),
   featured: Joi.boolean().empty().required()
@@ -84,7 +83,7 @@ router.post('/add', (req, res) => {
       );
     } else {
       console.log('Here', req.body);
-      productsController.add(req, res);
+      productsController.addProduct(req, res);
     }
   });
 });

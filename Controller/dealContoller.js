@@ -5,6 +5,19 @@ var notify = require('../fcmhelper');
 var lan = 0;
 var devicesModel = require('../Model/userdeviceModel');
 
+var message = {
+    android: {
+      ttl: 3600 * 1000, // 1 hour in milliseconds
+      priority: 'normal',
+      notification: {
+        title: '$GOOG up 1.43% on the day',
+        body: '$GOOG gained 11.80 points to close at 835.67, up 1.43% on the day.',
+        icon: 'stock_ticker_update',
+        color: '#f45342'
+      }
+    },
+    topic: 'TopicName'
+  };
 module.exports.getbyID = function (request, response) {
     if (request.query.language) {
         lan = request.query.language;
@@ -58,14 +71,15 @@ module.exports.addDeal = function (request, response) {
     if (request.body.language) {
         lan = request.body.language;
     }
+    request.body.dealable_id=request.info;
     deal_model.addDeal_model(request.body).then(
         function (result) {
-            devicesModel.getDevices(request.info).then(
-                function (result) {
-                    console.log('recieved android Result is ', result.android);
-                    console.log('recieved ios Result is ', result.ios);
+            devicesModel.getfollowerDevices(request.info).then(
+                function (devicesresult) {
+                    console.log('recieved android Result is ', devicesresult.android);
+                    console.log('recieved ios Result is ', devicesresult.ios);
 
-                    notify.sendsingleAndroid('message');
+                    notify.sendsingleAndroid(message);
 
                 },
                 function (err) {

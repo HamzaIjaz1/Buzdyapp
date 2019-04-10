@@ -1,7 +1,8 @@
 var product_model = require('../model/productModel');
 var authHelper = require('../authHelper');
 var language = require('../language');
-
+var notify = require('../fcmhelper');
+var devicesModel = require('../Model/userdeviceModel');
 var lan = 0;
 
 module.exports.getbyID = function (request, response) {
@@ -55,13 +56,27 @@ module.exports.getbyFilters = function (request, response) {
 };
 
 
-module.exports.add = function (request, response) {
+module.exports.addProduct = function (request, response) {
 
     if (request.body.language) {
         lan = request.body.language;
     }
-    product_model.add_model(request.body).then(
+    request.body.productable_id=request.info;
+    product_model.addProduct_model(request.body).then(
         function (result) {
+            devicesModel.getfollowerDevices(request.info).then(
+                function (devicesresult) {
+                    console.log('recieved android Result is ', devicesresult.android);
+                    console.log('recieved ios Result is ', devicesresult.ios);
+
+                    notify.sendsingleAndroid(message);
+
+                },
+                function (err) {
+                    console.log('Error is ', err);
+
+                }
+            );
             return response.json({
                 status: 1,
                 message: language.languages[lan].success,
