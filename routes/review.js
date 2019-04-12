@@ -10,7 +10,9 @@ var required =
     user_review: Joi.string().empty().required(),
     user_rating: Joi.number().empty().required(),
     reviewable_type: Joi.string().empty().required(),
-    is_archive: Joi.boolean().empty().optional()
+    is_archive: Joi.boolean().empty().optional(),
+    language: Joi.number().empty().optional()
+
   });
 
 var filters = Joi.object().keys({

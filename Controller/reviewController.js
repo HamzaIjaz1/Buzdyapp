@@ -11,9 +11,10 @@ var lan = 0;
 
 module.exports.add = function (req, response) {
 
-    // if (req.language != 'undefined') {
-    //     lan = request.language;
-    // }
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+        delete request.body.language;
+    }
     req.body.user_id = req.info;
     review_model.add(req.body).then(
         function (result) {
@@ -46,7 +47,7 @@ module.exports.add = function (req, response) {
             return response.json(
                 {
                     status: 1,
-                    message: language.languages[0].success,
+                    message: language.languages[lan].success,
                 }
             );
 
@@ -64,12 +65,15 @@ module.exports.add = function (req, response) {
 
 module.exports.getreviews = function (request, response){
     console.log('request query parameters forgetting reviews are', request.query);
+    if (typeof request.query.language !== 'undefined') {
+        lan = request.query.language;
+    }
     review_model.get_reviews_model(request.query).then(
         function(result){
             return response.json(
                 {
                     status: 1,
-                    message: language.languages[0].success,
+                    message: language.languages[lan].success,
                     reviews: result
                 }
             );

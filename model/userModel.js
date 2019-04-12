@@ -22,7 +22,6 @@ module.exports.signup_user_model = function (user) {
 module.exports.signin_user_model = function (user) {
     console.log(user);
 
-
     var queryString = "SELECT * FROM USERS WHERE email = ? AND password = ?";
     return new Promise(function (resolve, reject) {
         db.query(queryString, [user.email, user.password], function (err, result) {
@@ -30,6 +29,7 @@ module.exports.signin_user_model = function (user) {
                 console.log(err);
                 reject(err);
             } else {
+
                 resolve(result);
 
                 console.log('inside else model');
@@ -142,11 +142,17 @@ module.exports.getall_model = function (inputs) {
 
 module.exports.follow_model = function (inputs) {
     console.log('Model received: ', inputs);
+    var values={
+        following_id: inputs.following_id,
+        model_type: inputs.model_type,
+        follower_id: inputs.follower_id
+
+    };
 
     return new Promise(function (resolve, reject) {
 
         var queryString = "INSERT INTO following SET ?";
-        db.query(queryString, inputs, function (err, result) {
+        db.query(queryString, values, function (err, result) {
             if (err) {
                 reject(err);
             } else {
@@ -212,7 +218,7 @@ module.exports.get_follower_model = function(id){
 
 module.exports.update_model = function (inputs) {
     console.log('Model received: ', inputs);
-
+  
     return new Promise(function (resolve, reject) {
 
         var queryString = "update users set ? where users.id= " + mysql.escape(inputs.id);

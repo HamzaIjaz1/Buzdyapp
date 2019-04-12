@@ -1,6 +1,6 @@
 var user_model = require('../model/userModel');
 var authHelper = require('../authHelper');
-var language = require('../language');
+var {languages} = require('../language');
 var notify = require('../fcmhelper');
 var notify = require('../fcmhelper');
 var devicesModel = require('../Model/userdeviceModel');
@@ -9,8 +9,9 @@ var lan = 0;
 
 module.exports.signup_user = function (request, response) {
 
-    if (request.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+
     }
     user_model.signup_user_model(request.body).then(
         function (result) {
@@ -45,29 +46,42 @@ module.exports.signin_user = function (request, response) {
         email: request.body.email,
         password: request.body.password
     };
-    if (typeof request.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+
     }
 
     user_model.signin_user_model(user).then(
         (userinfo) => {
-            authHelper.generateToken(userinfo[0].id).then((token) => {
-                return response.send(
-                    JSON.stringify({
+            if (typeof userinfo !== 'undefined' && userinfo.length > 0){
+                 authHelper.generateToken(userinfo[0].id).then((token) => {
+                return response.json(
+                    {
                         status: 1,
-                        message: language.languages[lan].success,
+                        message: languages[lan].success,
                         user: userinfo,
                         token: token
-                    })
+                    }
                 );
             });
+            }
+            else{
+                return response.json(
+                    {
+                        status: 0,
+                        message:'User not found',
+
+                    }
+                );
+            }
+           
         },
         (err) => {
             console.log('Error', err);
             return response.send(
                 JSON.stringify({
                     status: 0,
-                    message: language.languages[0].error_text
+                    message: languages[lan].error_text
                 })
             );
 
@@ -76,15 +90,16 @@ module.exports.signin_user = function (request, response) {
 };
 
 module.exports.getbyID = function (request, response) {
-    if (typeof request.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.query.language !== 'undefined') {
+        lan = request.query.language;
+
     }
-    user_model.getbyID_model(request.params).then(
+    user_model.getbyID_model(request.query).then(
         function (users) {
             return response.send(
                 JSON.stringify({
                     status: 1,
-                    message: language.languages[lan].success,
+                    message: languages[lan].success,
                     merchants: users
                 })
             );
@@ -95,7 +110,7 @@ module.exports.getbyID = function (request, response) {
             return response.send(
                 JSON.stringify({
                     status: 0,
-                    message: language.languages[lan].error_text
+                    message: languages[lan].error_text
                 })
             );
         }
@@ -104,15 +119,16 @@ module.exports.getbyID = function (request, response) {
 
 
 module.exports.getall = function (request, response) {
-    if (typeof request.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+
     }
     user_model.getall_model(request.query).then(
         function (users) {
             return response.send(
                 JSON.stringify({
                     status: 1,
-                    message: language.languages[lan].success,
+                    message: languages[lan].success,
                     merchants: users
                 })
             );
@@ -123,7 +139,7 @@ module.exports.getall = function (request, response) {
             return response.send(
                 JSON.stringify({
                     status: 0,
-                    message: language.languages[lan].error_text
+                    message: languages[lan].error_text
                 })
             );
         }
@@ -132,8 +148,9 @@ module.exports.getall = function (request, response) {
 
 module.exports.follow_merchant = function (request, response) {
     console.log('This is request data', request.info);
-    if (request.body.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+
     }
     request.body.follower_id = request.info;
     user_model.follow_model(request.body).then(
@@ -168,7 +185,7 @@ module.exports.follow_merchant = function (request, response) {
             });
             return response.json({
                 status: 1,
-                message: language.languages[0].success
+                message: languages[lan].success
             });
         },
         function (err) {
@@ -191,24 +208,25 @@ module.exports.follow_merchant = function (request, response) {
 module.exports.unfollow_merchant = function (request, response) {
     
     console.log('This is request data', request.info);
-    if (request.body.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+
     }
     request.body.follower_id = request.info;
     user_model.unfollow_model(request.body).then(
         function (result) {
             console.log('result received is', result);
-            return response.send(
-                JSON.stringify({
+            return response.json(
+                {
                     status: 1,
-                    message: language.languages[0].success
-                })
+                    message: languages[lan].success
+                }
             );
 
         },
         function (err) {
             console.log(err);
-            return response.send({
+            return response.json({
                 status: 0,
                 message: 'Error unfollowing merchant'
             });
@@ -221,8 +239,9 @@ module.exports.unfollow_merchant = function (request, response) {
 module.exports.update = function (request, response) {
     // console.log('This is the request object',request);
     console.log('This is request data', request.info);
-    if (request.body.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+        delete request.body.language;
     }
     request.body.id = request.info;
     user_model.update_model(request.body).then(
@@ -230,7 +249,7 @@ module.exports.update = function (request, response) {
             console.log('result received is', result);
             return response.json({
                 status: 1,
-                message: language.languages[0].success
+                message: languages[lan].success
             });
 
         },
@@ -246,8 +265,9 @@ module.exports.update = function (request, response) {
 };
 
 module.exports.updateCoins = function (request, response) {
-    if (request.body.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+        delete request.body.language;
     }
     request.body.id = request.info;
     user_model.updateCoins_model(request.body).then(
@@ -255,7 +275,7 @@ module.exports.updateCoins = function (request, response) {
             console.log('result received is', result);
             return response.json({
                 status: 1,
-                message: language.languages[0].success
+                message: languages[lan].success
             });
 
         },
@@ -270,8 +290,8 @@ module.exports.updateCoins = function (request, response) {
 };
 
 module.exports.getCoins = function (request, response) {
-    if (request.body.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
     }
     request.body.id = request.info;
     user_model.getCoins_model(request.body).then(
@@ -279,7 +299,7 @@ module.exports.getCoins = function (request, response) {
             console.log('result received is', result);
             return response.json({
                 status: 1,
-                message: language.languages[0].success,
+                message: languages[lan].success,
                 coins: result[0].coins
             });
 
@@ -295,12 +315,15 @@ module.exports.getCoins = function (request, response) {
 };
 
 module.exports.getfollowers = function (request, response){
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+    }
     user_model.get_follower_model(request.info).then(
         function (result) {
             console.log('result received is', result);
             return response.json({
                 status: 1,
-                message: language.languages[0].success,
+                message: languages[lan].success,
                 followers: result
             });
 
@@ -316,12 +339,15 @@ module.exports.getfollowers = function (request, response){
 };
 
 module.exports.getfollowing = function (request, response){
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+    }
     user_model.get_following_model(request.info).then(
         function (result) {
             console.log('result received is', result);
             return response.json({
                 status: 1,
-                message: language.languages[0].success,
+                message: languages[lan].success,
                 following: result
             });
 
@@ -335,3 +361,6 @@ module.exports.getfollowing = function (request, response){
         }
     );
 };
+
+// console.log('I have got language', request.body.language);
+//         console.log('I set this language as', lan);

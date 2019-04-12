@@ -27,7 +27,9 @@ var values = Joi.object().keys({
   image: Joi.string().empty().optional(),
   dealable_type: Joi.string().empty().required(),
   category_id: Joi.number().empty().required(),
-  featured: Joi.boolean().empty().required()
+  featured: Joi.boolean().empty().required(),
+  language: Joi.number().empty().optional()
+
 
 });
 router.get('/getbyid', (req, res) => {

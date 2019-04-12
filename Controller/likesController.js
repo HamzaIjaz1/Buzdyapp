@@ -32,8 +32,8 @@ module.exports.insert_like = function (request, response) {
 
 module.exports.get_likes = function (request, response) {
     console.log('This is request data', request.query);
-    if (request.body.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.query.language !== 'undefined') {
+        lan = request.query.language;
     }
     
     likes_model.get_likes_model(request.query).then(

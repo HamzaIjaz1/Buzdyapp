@@ -27,11 +27,14 @@ var values = Joi.object().keys({
   image: Joi.string().empty().optional(),
   productable_type: Joi.string().empty().required(),
   category_id: Joi.number().empty().required(),
-  featured: Joi.boolean().empty().required()
+  featured: Joi.boolean().empty().required(),
+  language: Joi.number().empty().optional()
+
 });
 
 var req_array = Joi.object().keys({
-  ids: Joi.empty().required()
+  ids: Joi.empty().required(),
+  language: Joi.number().empty().optional()
 });
 
 router.get('/getbyid', (req, res) => {

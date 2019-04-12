@@ -13,7 +13,9 @@ var creds = Joi.object().keys({
 var filters = Joi.object().keys({
     user_id: Joi.number().empty().optional(),
     model_id: Joi.number().empty().optional(),
-    model_type: Joi.string().empty().optional()
+    model_type: Joi.string().empty().optional(),
+    language: Joi.number().empty().optional()
+
 });
 
 router.put('/insertlike', (req, res) => {

@@ -51,6 +51,6 @@ module.exports.getNotifications = function(user_id){
                 console.log('Received notifications as', result);
             resolve(result);
             }
-        })
-    })
-}
+        });
+    });
+};

@@ -23,6 +23,7 @@ var required =
     longitude: Joi.string().empty().optional(),
     featured: Joi.empty().optional(),
     feature_expiry: Joi.empty().optional(),
+    language: Joi.number().empty().optional(),
     isarchive: Joi.empty().optional()
   });
 
@@ -33,7 +34,9 @@ var creds = Joi.object().keys({
 });
 
 var validate_id = Joi.object().keys({
-  id: Joi.number().empty().required()
+  id: Joi.number().empty().required(),
+  language: Joi.number().empty().optional()
+
 });
 
 var filters = Joi.object().keys({
@@ -50,16 +53,19 @@ var filters = Joi.object().keys({
 });
 
 var validate_merchant_id = Joi.object().keys({
-  following_id: Joi.number().empty().required()
+  following_id: Joi.number().empty().required(),
+  language: Joi.number().empty().optional()
 });
 
 var follow = Joi.object().keys({
   following_id: Joi.number().empty().required(),
-  model_type: Joi.string().empty().required()
+  model_type: Joi.string().empty().required(),
+  language: Joi.number().empty().optional()
 });
 
 var validate_coin = Joi.object().keys({
-  number: Joi.number().empty().required()
+  number: Joi.number().empty().required(),
+  language: Joi.number().empty().optional()
 });
 
 
@@ -105,7 +111,7 @@ router.post('/signin', (req, res) => {
   });
 });
 
-router.get('/getmerchant/:id', (req, res) => {
+router.get('/getmerchant', (req, res) => {
   console.log('request params in get are', req.query);
   Joi.validate(req.query, validate_id, function (err, val) {
     if (err) {

@@ -6,7 +6,7 @@ var viewsModel = require('../model/viewsModel');
 var lan = 0;
 
 module.exports.getbyID = function (request, response) {
-    if (request.query.language) {
+    if (request.query.language ) {
         lan = request.query.language;
     }
     bank_model.getbyID_model(request.query.id).then(

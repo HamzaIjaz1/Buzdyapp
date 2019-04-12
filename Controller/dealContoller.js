@@ -85,8 +85,9 @@ module.exports.getbyFilters = function (request, response) {
 
 module.exports.addDeal = function (request, response) {
 
-    if (request.body.language) {
+    if (typeof request.body.language !== 'undefined') {
         lan = request.body.language;
+        delete request.body.language;
     }
     request.body.dealable_id = request.info;
     deal_model.addDeal_model(request.body).then(
@@ -106,13 +107,6 @@ module.exports.addDeal = function (request, response) {
 
                 }
             );
-            // var obj = {
-            //     notification_type : "POST_DEAL",
-            //     deal_id : 5,
-            //     message : 
-            // }
-            // ' {name} has posted a deal ','Hamza Ijaz'
-
             return response.json({
                 status: 1,
                 message: language.languages[lan].success,

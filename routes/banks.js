@@ -5,7 +5,8 @@ var Joi = require('joi');
 var bankController = require('../Controller/bankController');
 
 var validate_id = Joi.object().keys({
-    id: Joi.number().empty().required()
+    id: Joi.number().empty().required(),
+    language: Joi.number().empty().optional()
 });
 var filters = Joi.object().keys({
     latitude: Joi.number().empty().optional(),
@@ -24,7 +25,6 @@ router.get('/getbyid', (req, res) => {
     Joi.validate(req.query, validate_id, function (err, val) {
         if (err) {
             console.log("error is", err.details[0].path);
-
             return res.send(
                 JSON.stringify({
                     status: 0,

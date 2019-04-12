@@ -7,7 +7,7 @@ var viewsModel = require('../model/viewsModel');
 var lan = 0;
 
 module.exports.getbyID = function (request, response) {
-    if (request.query.language) {
+    if (typeof request.query.language !== 'undefined') {
         lan = request.query.language;
     }
     product_model.getbyID_model(request.query.id).then(
@@ -45,7 +45,7 @@ module.exports.getbyID = function (request, response) {
 
 
 module.exports.getbyFilters = function (request, response) {
-    if (request.query.language) {
+    if (typeof request.query.language !== 'undefined') {
         lan = request.query.language;
     }
     console.log('query values are', request.query);
@@ -73,8 +73,9 @@ module.exports.getbyFilters = function (request, response) {
 
 module.exports.addProduct = function (request, response) {
 
-    if (request.body.language) {
+    if (typeof request.body.language !== 'undefined') {
         lan = request.body.language;
+        delete request.body.language;
     }
     request.body.productable_id=request.info;
     product_model.addProduct_model(request.body).then(
@@ -112,13 +113,14 @@ module.exports.addProduct = function (request, response) {
 
 module.exports.compare = function (request, response) {
 
-    console.log('Request data is', request.body);
-
+    if (typeof request.query.language !== 'undefined') {
+        lan = request.query.language;
+    }
     product_model.compare(request.query.ids).then(
         function (result) {
             return response.json({
                 status: 1,
-                message: language.languages[0].success,
+                message: language.languages[lan].success,
                 products: result
             })
 

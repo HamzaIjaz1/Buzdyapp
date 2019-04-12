@@ -5,7 +5,8 @@ var Joi = require('joi');
 var branchController = require('../Controller/branchController');
 
 var validate_id = Joi.object().keys({
-    id: Joi.number().empty().required()
+    id: Joi.number().empty().required(),
+    language: Joi.number().empty().optional()
 });
 var filters = Joi.object().keys({
     latitude: Joi.number().empty().optional(),

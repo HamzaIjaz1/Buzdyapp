@@ -7,8 +7,9 @@ var lan = 0;
 module.exports.insert_view = function (request, response) {
     // console.log('This is the request object',request);
     console.log('This is request data', request.info);
-    if (request.body.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
+        delete request.body.language;
     }
     views_model.insert_views_model(request.body).then(
         function (result) {
@@ -32,8 +33,8 @@ module.exports.insert_view = function (request, response) {
 
 module.exports.get_views = function (request, response) {
     console.log('This is request data', request.query);
-    if (request.body.language != 'undefined') {
-        lan = request.language;
+    if (typeof request.query.language !== 'undefined') {
+        lan = request.query.language;
     }
     
     views_model.get_views_model(request.query).then(

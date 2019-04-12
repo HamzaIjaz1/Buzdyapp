@@ -6,7 +6,7 @@ var viewsModel = require('../model/viewsModel');
 var lan = 0;
 
 module.exports.getbyID = function (request, response) {
-    if (request.query.language) {
+    if (typeof request.query.language !== 'undefined') {
         lan = request.query.language;
     }
     branch_model.getbyID_model(request.query.id).then(
@@ -45,7 +45,7 @@ module.exports.getbyID = function (request, response) {
 };
 
 module.exports.getbyFilters = function (request, response) {
-    if (request.query.language) {
+    if (typeof request.query.language !== 'undefined') {
         lan = request.query.language;
     }
     console.log('query values are', request.query);

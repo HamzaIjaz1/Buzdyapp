@@ -6,8 +6,8 @@ var lan = 0;
 var notificationsModel = require('../Model/notificationsModel');
 
 module.exports.getUserNotifications = function (request, response) {
-    if (request.query.language) {
-        lan = request.query.language;
+    if (typeof request.body.language !== 'undefined') {
+        lan = request.body.language;
     }
     notificationsModel.getNotifications(request.info).then(
         function (notifications) {

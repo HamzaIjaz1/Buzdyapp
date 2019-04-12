@@ -7,7 +7,7 @@ module.exports.get_categories = function (request, response) {
     console.log('Request information', request.info);
 
     if (typeof request.body.language != 'undefined') {
-        lan = request.language;
+        lan = request.body.language;
         console.log('Language variable is', lan);
     }
     category_model.get_categories(request.body).then(
@@ -33,7 +33,7 @@ module.exports.get_categories = function (request, response) {
 
 
 module.exports.get_merchant_categories = function (request, response) {
-    if (typeof request.query.language != 'undefined') {
+    if (typeof request.query.language !== 'undefined') {
         lan = request.query.language;
         console.log('Language variable is', lan);
     }
