@@ -17,6 +17,7 @@ var deviceRouter = require('./routes/userDevice');
 var notifyRouter = require('./routes/notifications');
 var viewsRouter = require ('./routes/views');
 var likesRouter = require('./routes/likes');
+var conversationRouter = require ('./routes/conversation');
 
 var {
   auth
@@ -58,6 +59,7 @@ app.use('/users/getcoins',auth);
 app.use('/device',auth);
 app.use('/notifications',auth);
 app.use('/likes',auth);
+app.use('/message', auth);
 
 
 
@@ -79,6 +81,7 @@ app.use('/device',deviceRouter);
 app.use('/notifications',notifyRouter);
 app.use('/views', viewsRouter);
 app.use('/likes',likesRouter);
+app.use('/message', conversationRouter);
 
 
 

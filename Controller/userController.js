@@ -1,16 +1,34 @@
 var user_model = require('../model/userModel');
 var authHelper = require('../authHelper');
-var {languages} = require('../language');
+var {
+    languages
+} = require('../language');
 var notify = require('../fcmhelper');
 var notify = require('../fcmhelper');
 var devicesModel = require('../Model/userdeviceModel');
 var notificationsModel = require('../Model/notificationsModel');
 var lan = 0;
-
+var message = {
+    android: {
+        ttl: 3600 * 1000, // 1 hour in milliseconds
+        priority: 'normal',
+        notification: {
+            title: '$GOOG up 1.43% on the day',
+            body: '$GOOG gained 11.80 points to close at 835.67, up 1.43% on the day.',
+            icon: 'stock_ticker_update',
+            color: '#f45342'
+        }
+    },
+    data: { //you can send only notification or only data(or include both)
+        id: 0
+    },
+    topic: 'TopicName'
+};
 module.exports.signup_user = function (request, response) {
 
     if (typeof request.body.language !== 'undefined') {
         lan = request.body.language;
+        delete request.body.language;
 
     }
     user_model.signup_user_model(request.body).then(
@@ -53,28 +71,23 @@ module.exports.signin_user = function (request, response) {
 
     user_model.signin_user_model(user).then(
         (userinfo) => {
-            if (typeof userinfo !== 'undefined' && userinfo.length > 0){
-                 authHelper.generateToken(userinfo[0].id).then((token) => {
-                return response.json(
-                    {
+            if (typeof userinfo !== 'undefined' && userinfo.length > 0) {
+                authHelper.generateToken(userinfo[0].id).then((token) => {
+                    return response.json({
                         status: 1,
                         message: languages[lan].success,
                         user: userinfo,
                         token: token
-                    }
-                );
-            });
-            }
-            else{
-                return response.json(
-                    {
-                        status: 0,
-                        message:'User not found',
+                    });
+                });
+            } else {
+                return response.json({
+                    status: 0,
+                    message: 'User not found',
 
-                    }
-                );
+                });
             }
-           
+
         },
         (err) => {
             console.log('Error', err);
@@ -155,22 +168,26 @@ module.exports.follow_merchant = function (request, response) {
     request.body.follower_id = request.info;
     user_model.follow_model(request.body).then(
         function (result) {
-            
+
             devicesModel.getDevicebyID(request.info).then(
                 function (devicesresult) {
                     console.log('recieved Result in usercontroller for follow is ', devicesresult);
                     // notify.sendsingleAndroid(message);
-                    var notification={
-                        user_id:request.info,
-                        title:'New Follower',
-                        message:'You have a new follower'
-                    }
+                    message.data.id = result.insertId.toString();
+
+                    notify.sendsingleAndroid(message);
+
+                    var notification = {
+                        user_id: request.info,
+                        title: 'New Follower',
+                        message: 'You have a new follower'
+                    };
                     notificationsModel.addNotification(notification).then(
-                        function(notifyResult){
+                        function (notifyResult) {
                             console.log('notify result is', notifyResult);
 
                         },
-                        function(notifyerr){
+                        function (notifyerr) {
                             console.log('notify error is', notifyerr);
                         }
                     );
@@ -198,7 +215,7 @@ module.exports.follow_merchant = function (request, response) {
     ).catch(function (err) {
         console.log('error occurred, insde catch after model', err);
         response.json({
-            error:err
+            error: err
         });
     });
 
@@ -206,7 +223,7 @@ module.exports.follow_merchant = function (request, response) {
 
 
 module.exports.unfollow_merchant = function (request, response) {
-    
+
     console.log('This is request data', request.info);
     if (typeof request.body.language !== 'undefined') {
         lan = request.body.language;
@@ -216,12 +233,10 @@ module.exports.unfollow_merchant = function (request, response) {
     user_model.unfollow_model(request.body).then(
         function (result) {
             console.log('result received is', result);
-            return response.json(
-                {
-                    status: 1,
-                    message: languages[lan].success
-                }
-            );
+            return response.json({
+                status: 1,
+                message: languages[lan].success
+            });
 
         },
         function (err) {
@@ -314,7 +329,7 @@ module.exports.getCoins = function (request, response) {
     );
 };
 
-module.exports.getfollowers = function (request, response){
+module.exports.getfollowers = function (request, response) {
     if (typeof request.body.language !== 'undefined') {
         lan = request.body.language;
     }
@@ -338,7 +353,7 @@ module.exports.getfollowers = function (request, response){
     );
 };
 
-module.exports.getfollowing = function (request, response){
+module.exports.getfollowing = function (request, response) {
     if (typeof request.body.language !== 'undefined') {
         lan = request.body.language;
     }
@@ -361,6 +376,3 @@ module.exports.getfollowing = function (request, response){
         }
     );
 };
-
-// console.log('I have got language', request.body.language);
-//         console.log('I set this language as', lan);
