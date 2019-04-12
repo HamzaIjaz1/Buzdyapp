@@ -16,7 +16,7 @@ var ratesRouter = require('./routes/coinrates');
 var deviceRouter = require('./routes/userDevice');
 var notifyRouter = require('./routes/notifications');
 var viewsRouter = require ('./routes/views');
-
+var likesRouter = require('./routes/likes');
 
 var {
   auth
@@ -57,6 +57,8 @@ app.use('/users/updatecoins',auth);
 app.use('/users/getcoins',auth);
 app.use('/device',auth);
 app.use('/notifications',auth);
+app.use('/likes',auth);
+
 
 
 
@@ -76,6 +78,8 @@ app.use('/coinrates',ratesRouter);
 app.use('/device',deviceRouter);
 app.use('/notifications',notifyRouter);
 app.use('/views', viewsRouter);
+app.use('/likes',likesRouter);
+
 
 
 app.use('/getHash', function (req, res) {
