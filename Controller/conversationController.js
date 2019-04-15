@@ -39,7 +39,7 @@ module.exports.insert_conversation = function (request, response) {
                         user_id:request.body.user2,
                         title:'New Message',
                         message:'Some one just texted you'
-                    }
+                    };
                     notificationsModel.addNotification(notification).then(
                         function(notifyResult){
                             console.log('notify result is', notifyResult);

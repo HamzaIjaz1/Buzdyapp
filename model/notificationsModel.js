@@ -1,7 +1,9 @@
+// 'use strict';
 var db = require('../db');
 var mysql = require('mysql');
 
 module.exports.addNotification = function (inputs) {
+    console.log('inputs received in adding notifications are', inputs);
     var queryString='Insert into notifications SET ? ';
 
     return new Promise (function (resolve, reject){
