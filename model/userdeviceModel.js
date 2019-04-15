@@ -69,7 +69,8 @@ module.exports.deleteDevice = function (inputs) {
 module.exports.getfollowerDevices = function (input) {
     console.log('Inside get device model');
 
-    var queryString = 'Select * from user_devices join following on user_devices.user_id=following.follower_id where following.following_id= ' + mysql.escape(input) + ' and user_devices.device_type= \'android\'';
+    var queryString = 'Select * from user_devices join following on user_devices.user_id=following.follower_id where following.following_id= ' + mysql.escape(input) + ' and user_devices.device_type= ' + mysql.escape('android');
+    9;
     var queryStringIOS = 'Select * from user_devices join following on user_devices.user_id=following.follower_id where following.following_id= ' + mysql.escape(input) + ' and user_devices.device_type= \'ios\'';
     var android;
     var ios;
@@ -84,9 +85,8 @@ module.exports.getfollowerDevices = function (input) {
                 reject(err);
             } else {
                 // resolve(result);
-                console.log('android result is', androidresult);
-                result.android = androidresult[0];
-                // android=;
+                console.log('android result inside userDeviceModel is', androidresult);
+                result.android = androidresult;
 
                 // console.log('Inside else get device model');
 
@@ -98,7 +98,7 @@ module.exports.getfollowerDevices = function (input) {
             if (err) {
                 reject(err);
             } else {
-                result.ios = iosresult[0];
+                result.ios = iosresult;
 
                 resolve(result);
                 console.log('Inside else get device model');

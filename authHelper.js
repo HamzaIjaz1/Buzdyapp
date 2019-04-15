@@ -1,6 +1,3 @@
-// First we call the model using the above code.
-// We pass in the token from the request header and see if we can get the
-// User or not, if not then we return a 401 and if it works we pass next()
 var config = require('./config');
 var jwt = require('jsonwebtoken');
 
@@ -54,7 +51,7 @@ module.exports.isAuthenticated = function (req) {
                 if (err) {
                     reject(err);
                 } else {
-                    console.log('Decode is',decoded);
+                    console.log('Decode is', decoded);
                     req.info = decoded.data;
                     resolve();
                 }

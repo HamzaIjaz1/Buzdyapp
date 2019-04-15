@@ -28,10 +28,10 @@ router.post('/', (request, response) => {
 });
 
 router.get('/getmerchantscategories', (request, response) => {
-  console.log('parameters of query are',request.query);
+  console.log('parameters of query are', request.query);
   Joi.validate(request.query, inputs, function (err, val) {
     if (err) {
-      console.log('Error validating input inside getmerchant categories route',err);
+      console.log('Error validating input inside getmerchant categories route', err);
       return response.send(
         JSON.stringify({
           status: 0,

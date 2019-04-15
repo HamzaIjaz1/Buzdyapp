@@ -27,8 +27,6 @@ module.exports.getbyID_model = function (id) {
 module.exports.getbyFilters_model = function (inputs) {
     console.log('parameters received are', inputs);
 
-    // var dealid = parseInt(id);
-    // console.log('after parse', id);
     var pagenumber = 0;
     var pagesize = 5;
     var myradius = 30;
@@ -37,9 +35,9 @@ module.exports.getbyFilters_model = function (inputs) {
 
     var queryString = "SELECT * FROM deals JOIN users on users.id = deals.dealable_id";
 
-    if (inputs.fav){
+    if (inputs.fav) {
         var fav = parseInt(inputs.fav);
-        if (fav>0){
+        if (fav > 0) {
             queryString += ' JOIN fav_merchant on users.id=fav_merchant.merchant_id WHERE fav_merchant.user_id=' + mysql.escape(inputs.userid);
         }
     }
@@ -87,9 +85,9 @@ module.exports.getbyFilters_model = function (inputs) {
     }
 
     if (queryString.includes('WHERE')) {
-        queryString += ' AND deals.dealable_type LIKE'+ mysql.escape(user);
-    }else{
-        queryString += ' WHERE deals.dealable_type LIKE'+ mysql.escape(user);
+        queryString += ' AND deals.dealable_type LIKE' + mysql.escape(user);
+    } else {
+        queryString += ' WHERE deals.dealable_type LIKE' + mysql.escape(user);
 
     }
 
@@ -98,7 +96,7 @@ module.exports.getbyFilters_model = function (inputs) {
     queryString += ' LIMIT ' + pagesize + ' OFFSET ' + pagenumber;
 
     return new Promise(function (resolve, reject) {
-        console.log('Query String is',queryString);
+        console.log('Query String is', queryString);
         db.query(queryString, function (err, result) {
             if (err) {
                 console.log('Error while getting all users', err);
@@ -116,11 +114,11 @@ module.exports.getbyFilters_model = function (inputs) {
 
 module.exports.addDeal_model = function (inputs) {
     console.log('DEAL array must be', inputs);
-    var type ="";
-    if (inputs.dealable_type=='user'){
-        inputs.dealable_type='App\\Models\\User';
-    }else{
-        inputs.dealable_type='App\\Models\\Bank';
+    var type = "";
+    if (inputs.dealable_type == 'user') {
+        inputs.dealable_type = 'App\\Models\\User';
+    } else {
+        inputs.dealable_type = 'App\\Models\\Bank';
     }
 
     var queryString = "INSERT into deals SET ?";
@@ -130,17 +128,6 @@ module.exports.addDeal_model = function (inputs) {
                 console.log('Error while adding deals', err);
                 reject(err);
             } else {
-                // var tokenquery = 'Select token from user_devices join following on user_devices.user_id=following.follower_id';
-                // db.query(tokenquery, function (err, result){
-                //     if (err){
-                //         console.log('error while executing tokenquery',err);
-                //         reject(err);
-                //     }
-                //     else{
-                //         resolve(result);
-                //     }
-
-                // });
                 console.log('result received after adding deal is ', result);
                 resolve(result);
                 console.log('inside else model for adding deal');

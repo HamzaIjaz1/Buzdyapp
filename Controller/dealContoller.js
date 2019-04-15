@@ -7,7 +7,12 @@ var notificationsModel = require("../Model/notificationsModel");
 var devicesModel = require("../Model/userdeviceModel");
 
 var lan = 0;
-
+var notification = {
+    user_id: '',
+    // devicesresult.android.user_id,
+    title: 'New Product',
+    message: 'A merchant you are following just added a new product'
+};
 var message = {
     android: {
         ttl: 3600 * 1000, // 1 hour in milliseconds
@@ -107,28 +112,21 @@ module.exports.addDeal = function (request, response) {
                     console.log('devices result is', devicesresult);
 
                     notify.sendsingleAndroid(message);
-                    var notification = {
-                        user_id: devicesresult.android.user_id,
-                        title: 'New Deal',
-                        message: 'the merchant you are following just added a new deal'
-                    };
-                    notificationsModel.addNotification(notification).then(
-                        function (notifyResult) {
-                            console.log('notify result is', notifyResult);
 
-                        },
-                        function (notifyerr) {
-                            console.log('notify error is', notifyerr);
-                        }
-                    );
-                    //   devicesresult.android.forEach(function(element) {
-                    //       console.log('loop');
-                    //     resultEdit(element);
-                    //   });
+                    devicesresult.android.forEach(function (element) {
+                        console.log('loop');
+                        resultEdit(element);
+                    });
+
+                    devicesresult.ios.forEach(function (element) {
+                        console.log('loop');
+                        resultEdit(element);
+                    });
 
                 },
                 function (err) {
                     console.log("Error is ", err);
+
                 }
             );
             return response.json({
@@ -144,11 +142,15 @@ module.exports.addDeal = function (request, response) {
                 message: "Error adding deal"
             });
         }
-    );
+    ).catch(err => {
+        console.log('error occurred, throwing inside catch of add deal controller', err);
+        throw (err);
+
+    });
 };
 
 function resultEdit(item) {
-    notification.user_id = item.id;
+    notification.user_id = item.user_id;
     notificationsModel.addNotification(notification).then(
         function (notifyResult) {
             console.log('notify result is', notifyResult);

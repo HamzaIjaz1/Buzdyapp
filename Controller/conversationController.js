@@ -35,17 +35,17 @@ module.exports.insert_conversation = function (request, response) {
                 function (devicesresult) {
                     console.log('recieved Result in usercontroller for follow is ', devicesresult);
                     // notify.sendsingleAndroid(message);
-                    var notification={
-                        user_id:request.body.user2,
-                        title:'New Message',
-                        message:'Some one just texted you'
+                    var notification = {
+                        user_id: request.body.user2,
+                        title: 'New Message',
+                        message: 'Some one just texted you'
                     };
                     notificationsModel.addNotification(notification).then(
-                        function(notifyResult){
+                        function (notifyResult) {
                             console.log('notify result is', notifyResult);
 
                         },
-                        function(notifyerr){
+                        function (notifyerr) {
                             console.log('notify error is', notifyerr);
                         }
                     );
@@ -72,47 +72,47 @@ module.exports.insert_conversation = function (request, response) {
     );
 };
 
-module.exports.getall_conversations = function(request, response) {
+module.exports.getall_conversations = function (request, response) {
     if (request.query.language) {
-      lan = request.query.language;
+        lan = request.query.language;
     }
     conversation_model.getAll(request.info).then(
-      function(conversation) {  
-        return response.json({
-          status: 1,
-          message: language.languages[lan].success,
-          conversations: conversation
-        });
-      },
-      function(error) {
-        console.log("Error while getting merchants by id", error);
-        return response.json({
-          status: 0,
-          message: language.languages[lan].error_text
-        });
-      }
+        function (conversation) {
+            return response.json({
+                status: 1,
+                message: language.languages[lan].success,
+                conversations: conversation
+            });
+        },
+        function (error) {
+            console.log("Error while getting merchants by id", error);
+            return response.json({
+                status: 0,
+                message: language.languages[lan].error_text
+            });
+        }
     );
-  };
+};
 
-  module.exports.getbyId = function(request, response) {
+module.exports.getbyId = function (request, response) {
     if (request.query.language) {
-      lan = request.query.language;
+        lan = request.query.language;
     }
-    request.query.user1=request.info;
+    request.query.user1 = request.info;
     conversation_model.getbyid(request.query).then(
-      function(conversation) {  
-        return response.json({
-          status: 1,
-          message: language.languages[lan].success,
-          conversation: conversation
-        });
-      },
-      function(error) {
-        console.log("Error while getting merchants by id", error);
-        return response.json({
-          status: 0,
-          message: language.languages[lan].error_text
-        });
-      }
+        function (conversation) {
+            return response.json({
+                status: 1,
+                message: language.languages[lan].success,
+                conversation: conversation
+            });
+        },
+        function (error) {
+            console.log("Error while getting merchants by id", error);
+            return response.json({
+                status: 0,
+                message: language.languages[lan].error_text
+            });
+        }
     );
-  };
+};

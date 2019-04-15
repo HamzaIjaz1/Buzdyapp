@@ -36,9 +36,9 @@ module.exports.getbyFilters_model = function (inputs) {
 
     var queryString = "SELECT * FROM banks ";
 
-    if (inputs.fav){
+    if (inputs.fav) {
         var fav = parseInt(inputs.fav);
-        if (fav>0){
+        if (fav > 0) {
             queryString += ' JOIN fav_bank on banks.id=fav_bank.bank_id WHERE fav_bank.user_id=' + mysql.escape(inputs.userid);
         }
     }
@@ -82,13 +82,13 @@ module.exports.getbyFilters_model = function (inputs) {
         if (queryString.includes('WHERE')) {
             queryString += 'AND (3959 * acos(cos(radians(' + mysql.escape(inputs.latitude) + '))*cos(radians(banks.latitude))*cos(radians(banks.longitude) - radians(' + mysql.escape(inputs.longitude) + ')) + sin(radians(' + mysql.escape(inputs.latitude) + ')) * sin(radians(banks.latitude)))) >' + mysql.escape(myradius);
         } else
-        queryString += ' WHERE (3959 * acos(cos(radians(' + mysql.escape(inputs.latitude) + '))*cos(radians(banks.latitude))*cos(radians(banks.longitude) - radians(' + mysql.escape(inputs.longitude) + ')) + sin(radians(' + mysql.escape(inputs.latitude) + ')) * sin(radians(banks.latitude)))) >' + mysql.escape(myradius);
+            queryString += ' WHERE (3959 * acos(cos(radians(' + mysql.escape(inputs.latitude) + '))*cos(radians(banks.latitude))*cos(radians(banks.longitude) - radians(' + mysql.escape(inputs.longitude) + ')) + sin(radians(' + mysql.escape(inputs.latitude) + ')) * sin(radians(banks.latitude)))) >' + mysql.escape(myradius);
     }
 
     queryString += ' LIMIT ' + pagesize + ' OFFSET ' + pagenumber;
 
     return new Promise(function (resolve, reject) {
-        console.log('Query String is',queryString);
+        console.log('Query String is', queryString);
         db.query(queryString, function (err, result) {
             if (err) {
                 console.log('Error while getting all users', err);

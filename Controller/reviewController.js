@@ -22,17 +22,17 @@ module.exports.add = function (req, response) {
                 function (devicesresult) {
                     console.log('recieved Result in usercontroller for follow is ', devicesresult);
                     // notify.sendsingleAndroid(message);
-                    var notification={
-                        user_id:request.info,
-                        title:'New Review',
-                        message:'Some one just posted a review for you!'
+                    var notification = {
+                        user_id: request.info,
+                        title: 'New Review',
+                        message: 'Some one just posted a review for you!'
                     }
                     notificationsModel.addNotification(notification).then(
-                        function(notifyResult){
+                        function (notifyResult) {
                             console.log('notify result is', notifyResult);
 
                         },
-                        function(notifyerr){
+                        function (notifyerr) {
                             console.log('notify error is', notifyerr);
                         }
                     );
@@ -44,12 +44,10 @@ module.exports.add = function (req, response) {
             ).catch(function (err) {
                 console.log('error occurred, insde catch after calling devices', err);
             });
-            return response.json(
-                {
-                    status: 1,
-                    message: language.languages[lan].success,
-                }
-            );
+            return response.json({
+                status: 1,
+                message: language.languages[lan].success,
+            });
 
         },
         function (err) {
@@ -63,25 +61,23 @@ module.exports.add = function (req, response) {
 
 };
 
-module.exports.getreviews = function (request, response){
+module.exports.getreviews = function (request, response) {
     console.log('request query parameters forgetting reviews are', request.query);
     if (typeof request.query.language !== 'undefined') {
         lan = request.query.language;
     }
     review_model.get_reviews_model(request.query).then(
-        function(result){
-            return response.json(
-                {
-                    status: 1,
-                    message: language.languages[lan].success,
-                    reviews: result
-                }
-            );
+        function (result) {
+            return response.json({
+                status: 1,
+                message: language.languages[lan].success,
+                reviews: result
+            });
 
         },
-        function (err){
+        function (err) {
             console.log('error while getting reviews with filters', err);
-            return  response.json({
+            return response.json({
                 status: 0,
                 message: 'Error adding a review'
             });

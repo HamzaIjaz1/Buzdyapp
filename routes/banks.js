@@ -14,7 +14,7 @@ var filters = Joi.object().keys({
     radius: Joi.number().empty().optional(),
     keyword: Joi.string().empty().optional(),
     page_no: Joi.number().empty().optional(),
-  page_size: Joi.number().empty().optional(),
+    page_size: Joi.number().empty().optional(),
     country: Joi.string().empty().optional(),
     city: Joi.string().empty().optional(),
     language: Joi.number().empty().optional(),

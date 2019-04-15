@@ -5,7 +5,6 @@ var lan = 0;
 
 
 module.exports.insert_view = function (request, response) {
-    // console.log('This is the request object',request);
     console.log('This is request data', request.info);
     if (typeof request.body.language !== 'undefined') {
         lan = request.body.language;
@@ -36,7 +35,7 @@ module.exports.get_views = function (request, response) {
     if (typeof request.query.language !== 'undefined') {
         lan = request.query.language;
     }
-    
+
     views_model.get_views_model(request.query).then(
         function (result) {
             console.log('result received is', result);

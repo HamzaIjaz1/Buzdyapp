@@ -218,8 +218,8 @@ router.put('/updatecoins', (req, res) => {
 });
 
 router.get('/getcoins', (req, res) => {
-      userController.getCoins(req, res);
-   
+  userController.getCoins(req, res);
+
 });
 
 router.get('/getfollowing', (req, res) => {

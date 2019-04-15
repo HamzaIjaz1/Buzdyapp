@@ -1,12 +1,9 @@
 var userDevice_model = require('../model/userdeviceModel');
 var language = require('../language');
-// var notify = require('../fcmhelper');
 
 var lan = 0;
 
 module.exports.add_device = function (req, response) {
-
-    // notify.sendsingle('message');
 
     if (typeof req.body.language !== 'undefined') {
         lan = req.body.language;
@@ -15,12 +12,10 @@ module.exports.add_device = function (req, response) {
     req.body.user_id = req.info;
     userDevice_model.addDevice(req.body).then(
         function () {
-            return response.json(
-                {
-                    status: 1,
-                    message: language.languages[lan].success,
-                }
-            );
+            return response.json({
+                status: 1,
+                message: language.languages[lan].success,
+            });
 
         },
         function (err) {
@@ -43,12 +38,10 @@ module.exports.deleteDevice = function (req, response) {
     req.body.user_id = req.info;
     userDevice_model.deleteDevice(req.body).then(
         function () {
-            return response.json(
-                {
-                    status: 1,
-                    message: language.languages[lan].success,
-                }
-            );
+            return response.json({
+                status: 1,
+                message: language.languages[lan].success,
+            });
 
         },
         function (err) {
@@ -61,4 +54,3 @@ module.exports.deleteDevice = function (req, response) {
     );
 
 };
-

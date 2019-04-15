@@ -172,7 +172,6 @@ module.exports.follow_merchant = function (request, response) {
             devicesModel.getDevicebyID(request.info).then(
                 function (devicesresult) {
                     console.log('recieved Result in usercontroller for follow is ', devicesresult);
-                    // notify.sendsingleAndroid(message);
                     message.data.id = result.insertId.toString();
 
                     notify.sendsingleAndroid(message);
@@ -252,7 +251,6 @@ module.exports.unfollow_merchant = function (request, response) {
 
 
 module.exports.update = function (request, response) {
-    // console.log('This is the request object',request);
     console.log('This is request data', request.info);
     if (typeof request.body.language !== 'undefined') {
         lan = request.body.language;

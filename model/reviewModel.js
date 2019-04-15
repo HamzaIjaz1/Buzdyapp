@@ -41,8 +41,8 @@ module.exports.get_reviews_model = function (inputs) {
 
         } else
             queryString += ' where reviews.reviewable_type= ' + mysql.escape(merchant);
-    }else
-    if (inputs.user_id){
+    } else
+    if (inputs.user_id) {
         queryString += ' where reviews.user_id= ' + mysql.escape(inputs.user_id);
 
     }

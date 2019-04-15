@@ -6,7 +6,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var categoriesRouter = require('./routes/categories');
-var dealsRouter  =require ('./routes/deals');
+var dealsRouter = require('./routes/deals');
 var productsRouter = require('./routes/products');
 var banksRouter = require('./routes/banks');
 var branchRouter = require('./routes/branch');
@@ -15,9 +15,9 @@ var metaRouter = require('./routes/coinsmetadata');
 var ratesRouter = require('./routes/coinrates');
 var deviceRouter = require('./routes/userDevice');
 var notifyRouter = require('./routes/notifications');
-var viewsRouter = require ('./routes/views');
+var viewsRouter = require('./routes/views');
 var likesRouter = require('./routes/likes');
-var conversationRouter = require ('./routes/conversation');
+var conversationRouter = require('./routes/conversation');
 
 var {
   auth
@@ -42,7 +42,6 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use(middleware);
 app.use('/categories', auth);
@@ -54,11 +53,11 @@ app.use('/users/follow', auth);
 app.use('/users/unfollow', auth);
 app.use('/review/add', auth);
 app.use('/users/update', auth);
-app.use('/users/updatecoins',auth);
-app.use('/users/getcoins',auth);
-app.use('/device',auth);
-app.use('/notifications',auth);
-app.use('/likes',auth);
+app.use('/users/updatecoins', auth);
+app.use('/users/getcoins', auth);
+app.use('/device', auth);
+app.use('/notifications', auth);
+app.use('/likes', auth);
 app.use('/message', auth);
 
 
@@ -71,16 +70,16 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
-app.use('/deals',dealsRouter);
+app.use('/deals', dealsRouter);
 app.use('/banks', banksRouter);
 app.use('/branch', branchRouter);
 app.use('/review', reviewRouter);
-app.use('/coinsmetadata',metaRouter);
-app.use('/coinrates',ratesRouter);
-app.use('/device',deviceRouter);
-app.use('/notifications',notifyRouter);
+app.use('/coinsmetadata', metaRouter);
+app.use('/coinrates', ratesRouter);
+app.use('/device', deviceRouter);
+app.use('/notifications', notifyRouter);
 app.use('/views', viewsRouter);
-app.use('/likes',likesRouter);
+app.use('/likes', likesRouter);
 app.use('/message', conversationRouter);
 
 

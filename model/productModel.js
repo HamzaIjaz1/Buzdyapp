@@ -123,7 +123,7 @@ module.exports.addProduct_model = function (inputs) {
                 console.log('Error while adding product', err);
                 reject(err);
             } else {
-                
+
                 console.log('Inside model result is', result);
                 resolve(result);
 
@@ -141,13 +141,13 @@ module.exports.compare = function (input) {
     console.log('After split', values);
 
     var checkquery = 'select count(distinct category_id) as number from products where id IN (' + mysql.escape(values) + ')';
-    console.log('checkquery is',checkquery);
+    console.log('checkquery is', checkquery);
     return new Promise(function (resolve, reject) {
 
         db.query(checkquery, function (err, checkresult) {
             if (err || checkresult[0].number > 1) {
                 // console.log('error occurred', err);
-                 console.log('check result is', checkresult[0].number);
+                console.log('check result is', checkresult[0].number);
 
                 reject('categories must be same');
             } else {

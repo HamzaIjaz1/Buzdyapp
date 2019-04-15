@@ -142,7 +142,7 @@ module.exports.getall_model = function (inputs) {
 
 module.exports.follow_model = function (inputs) {
     console.log('Model received: ', inputs);
-    var values={
+    var values = {
         following_id: inputs.following_id,
         model_type: inputs.model_type,
         follower_id: inputs.follower_id
@@ -156,7 +156,7 @@ module.exports.follow_model = function (inputs) {
             if (err) {
                 reject(err);
             } else {
-              resolve(result);
+                resolve(result);
             }
         });
     });
@@ -181,16 +181,15 @@ module.exports.unfollow_model = function (inputs) {
 
 };
 
-module.exports.get_following_model = function(id){
-    var queryString = 'select * from following where follower_id= '+mysql.escape(id);
+module.exports.get_following_model = function (id) {
+    var queryString = 'select * from following where follower_id= ' + mysql.escape(id);
 
-    return new Promise(function(resolve, reject){
-        db.query(queryString,function (err, result){
-            if (err){
-                console.log('error getting following',err);
+    return new Promise(function (resolve, reject) {
+        db.query(queryString, function (err, result) {
+            if (err) {
+                console.log('error getting following', err);
                 reject(err);
-            }
-            else{
+            } else {
                 console.log('result after getting following is');
                 resolve(result);
             }
@@ -198,16 +197,15 @@ module.exports.get_following_model = function(id){
     });
 };
 
-module.exports.get_follower_model = function(id){
-    var queryString = 'select * from following where following_id= '+mysql.escape(id);
+module.exports.get_follower_model = function (id) {
+    var queryString = 'select * from following where following_id= ' + mysql.escape(id);
 
-    return new Promise(function(resolve, reject){
-        db.query(queryString,function (err, result){
-            if (err){
-                console.log('error getting followers',err);
+    return new Promise(function (resolve, reject) {
+        db.query(queryString, function (err, result) {
+            if (err) {
+                console.log('error getting followers', err);
                 reject(err);
-            }
-            else{
+            } else {
                 console.log('result after getting followers is');
                 resolve(result);
             }
@@ -218,7 +216,7 @@ module.exports.get_follower_model = function(id){
 
 module.exports.update_model = function (inputs) {
     console.log('Model received: ', inputs);
-  
+
     return new Promise(function (resolve, reject) {
 
         var queryString = "update users set ? where users.id= " + mysql.escape(inputs.id);

@@ -65,7 +65,7 @@ module.exports.create_conversation_model = function (inputs) {
 
 module.exports.getAll = function (id) {
 
-    var queryString = 'select * from conversationable join conversations on conversationable.conversation_id=conversations.id where user1= ' + mysql.escape(id) ;
+    var queryString = 'select * from conversationable join conversations on conversationable.conversation_id=conversations.id where user1= ' + mysql.escape(id);
 
     return new Promise(function (resolve, reject) {
 
@@ -85,7 +85,7 @@ module.exports.getAll = function (id) {
 
 module.exports.getbyid = function (inputs) {
 
-    var queryString = 'select * from conversationable join conversations on conversationable.conversation_id=conversations.id where user1= ' + mysql.escape(inputs.user1)+' and user2= '+mysql.escape(inputs.user2);
+    var queryString = 'select * from conversationable join conversations on conversationable.conversation_id=conversations.id where user1= ' + mysql.escape(inputs.user1) + ' and user2= ' + mysql.escape(inputs.user2);
 
     return new Promise(function (resolve, reject) {
 
