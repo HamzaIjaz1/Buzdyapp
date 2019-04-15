@@ -18,6 +18,7 @@ var notifyRouter = require('./routes/notifications');
 var viewsRouter = require('./routes/views');
 var likesRouter = require('./routes/likes');
 var conversationRouter = require('./routes/conversation');
+var mailRouter = require('./routes/mail');
 
 var {
   auth
@@ -81,6 +82,7 @@ app.use('/notifications', notifyRouter);
 app.use('/views', viewsRouter);
 app.use('/likes', likesRouter);
 app.use('/message', conversationRouter);
+app.use('/mail',mailRouter);
 
 
 
