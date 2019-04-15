@@ -19,6 +19,7 @@ var viewsRouter = require('./routes/views');
 var likesRouter = require('./routes/likes');
 var conversationRouter = require('./routes/conversation');
 var mailRouter = require('./routes/mail');
+var resetRouter = require ('./routes/reset');
 
 var {
   auth
@@ -83,6 +84,7 @@ app.use('/views', viewsRouter);
 app.use('/likes', likesRouter);
 app.use('/message', conversationRouter);
 app.use('/mail',mailRouter);
+app.use('/reset',resetRouter);
 
 
 
