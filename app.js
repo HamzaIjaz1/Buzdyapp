@@ -63,10 +63,6 @@ app.use('/likes', auth);
 app.use('/message', auth);
 
 
-
-
-
-
 app.use('/', indexRouter);
 
 app.use('/users', usersRouter);

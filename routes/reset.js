@@ -4,7 +4,7 @@ var handle_reset = (require('../Controller/resetController'));
 var Joi = require('joi');
 
 var token = Joi.object().keys({
-    token: Joi.number().empty().required(),
+    token: Joi.string().empty().required(),
     language: Joi.string().empty().optional()
 });
 router.get('/', (req, res) => {
